@@ -1,0 +1,106 @@
+@use '~/shared/styles/vars' as vars;
+
+.portfolioView {
+  margin-bottom: vars.rem(74);
+
+
+  @media (max-width: vars.$max-1400) {
+    //width: calc(100% - 32px);
+    padding: 0 vars.rem(16);
+    padding: 0;
+  }
+}
+
+.titleBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: vars.rem(20);
+  text-align: center;
+  margin-top: vars.rem(130);
+  margin-bottom: vars.rem(42);
+
+  .title {
+    margin-bottom: vars.rem(16);
+
+    @media (max-width: vars.$max-1000) {
+      margin-bottom: vars.rem(5);
+    }
+  }
+
+  .subTitle {
+    color: vars.$gray !important;
+    margin-bottom: vars.rem(32);
+
+    @media (max-width: vars.$max-1000) {
+      font-size: vars.rem(19);
+      margin-bottom: vars.rem(10);
+    }
+  }
+
+  .actionButton {
+    padding: vars.rem(10) vars.rem(20);
+  }
+
+  @media (max-width: vars.$max-1300) {
+    padding: 0 vars.rem(16);
+  }
+}
+
+.portfolioBlock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: vars.rem(20);
+
+  &_empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .emptyBlock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    height: 40vh;
+
+    .emptySpan {
+      font-size: vars.rem(31);
+      font-weight: 500;
+    }
+  }
+
+  @media (max-width: vars.$max-1550) {
+    grid-template-columns: repeat(3, 1fr);
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: vars.$max-1300) {
+    padding: 0 vars.rem(16);
+  }
+
+  @media (max-width: vars.$max-1250) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: vars.$max-950) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: vars.rem(40);
+  }
+}
+
+.moreBtnBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: vars.rem(64);
+
+  .moreBtn {
+    font-size: vars.rem(19);
+    padding: vars.rem(20) vars.rem(60);
+    font-weight: 500;
+  }
+}

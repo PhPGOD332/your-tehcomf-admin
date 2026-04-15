@@ -1,0 +1,69 @@
+@use '~/shared/styles/vars' as vars;
+
+.checkBlock {
+
+}
+
+.checkLabel {
+  display: flex;
+  background-color: vars.$light-gray;
+  padding: vars.rem(16);
+  border-radius: vars.rem(16);
+  cursor: pointer;
+  transition: 0.2s;
+  user-select: none;
+
+  &_checked {
+    display: flex;
+    background-color: vars.$light-gray;
+    padding: vars.rem(16);
+    border-radius: vars.rem(16);
+    cursor: pointer;
+    transition: 0.2s;
+    user-select: none;
+  }
+
+  &:hover {
+    background-color: vars.$gray;
+
+    .checkSpan {
+      color: vars.$light-gray;
+    }
+
+    .checkIcon {
+      border: vars.rem(2) solid vars.$light-gray;
+    }
+  }
+}
+
+.checkSpan {
+  font-size: vars.rem(16);
+  font-weight: 400;
+  color: vars.$black;
+  transition: 0.3s;
+}
+
+.checkInput {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.checkIcon {
+  min-width: vars.rem(20);
+  height: vars.rem(20);
+  border-radius: 50%;
+  border: vars.rem(2) solid vars.$gray;
+  transition: 0.3s;
+
+  &_checked {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: vars.rem(20);
+    height: vars.rem(20);
+    border-radius: 50%;
+    transition: 0.3s;
+    background-color: vars.$green;
+  }
+}

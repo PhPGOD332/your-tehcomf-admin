@@ -1,0 +1,60 @@
+@use '~/shared/styles/vars' as vars;
+
+.textareaLabel {
+  display: flex;
+  flex-direction: column;
+  gap: vars.rem(8);
+  font-size: vars.rem(16);
+  font-weight: 500;
+  color: vars.$gray;
+  text-align: start;
+  transition: color 0.2s;
+
+  &:hover {
+    color: rgba(vars.$gray, 0.5);
+  }
+
+  &_active {
+    color: vars.$green;
+
+    &:hover {
+      color: rgba(vars.$green, 0.5);
+    }
+  }
+
+  &_error {
+    color: vars.$red;
+
+    &:hover {
+      color: rgba(vars.$red, 0.5);
+
+      .errorSpan {
+        color: rgba(vars.$red, 0.5);
+      }
+    }
+  }
+
+  .textarea {
+    font-size: vars.rem(16);
+    font-weight: 600;
+    color: vars.$black;
+    border: none;
+    border-radius: vars.rem(10);
+    padding: vars.rem(8);
+    outline: none;
+    background-color: vars.$light-gray;
+
+    &::placeholder {
+      font-size: vars.rem(16);
+      font-weight: 300;
+      color: rgba(vars.$gray, 0.3);
+    }
+  }
+
+  .errorSpan {
+    color: vars.$red;
+    font-size: vars.rem(10);
+    font-weight: 400;
+    transition: 0.2s;
+  }
+}

@@ -1,0 +1,50 @@
+@use '~/shared/styles/vars' as vars;
+
+.greenButton {
+  padding: vars.rem(16) vars.rem(28);
+  cursor: pointer;
+  background-color: vars.$green;
+  border-radius: vars.rem(40);
+  border: none;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: vars.$light-green;
+  }
+
+  .buttonCaption {
+    font-size: vars.rem(16);
+    color: vars.$white;
+    font-weight: 600;
+  }
+
+  .buttonIcon {
+    display: none;
+  }
+}
+
+.greenButtonMobile {
+  @media (max-width: vars.$max-1400) {
+
+  }
+}
+
+.greenButtonMobileSmall {
+  @media (max-width: vars.$max-1400) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: vars.rem(64);
+    width: vars.rem(64);
+    padding: 0;
+    border-radius: vars.rem(24);
+
+    .buttonCaption {
+      display: none;
+    }
+
+    .buttonIcon {
+      display: flex;
+    }
+  }
+}

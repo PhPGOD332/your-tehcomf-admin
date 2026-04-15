@@ -1,0 +1,221 @@
+@use '~/shared/styles/vars' as vars;
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+.switchContact {
+  &:hover {
+    background-color: vars.$gray;
+
+    .contactPreview {
+      opacity: 0;
+      visibility: hidden;
+      position: absolute;
+    }
+
+    .contactPostview {
+      opacity: 1;
+      visibility: visible;
+      position: relative;
+
+      .caption {
+        //color: vars.$light-gray;
+
+        &_gray {
+          color: vars.$gray;
+        }
+
+        &_white {
+          color: vars.$white;
+        }
+      }
+
+      .contactIcon > svg > path {
+        transition: 0.2s;
+        fill: vars.$light-gray;
+      }
+    }
+  }
+
+  &_gray {
+    background-color: vars.$light-gray;
+  }
+
+  &_green {
+    background-color: vars.$green;
+  }
+}
+
+.contact {
+  position: relative;
+  display: flex;
+  align-items: center;
+  //background-color: vars.$light-gray;
+  border-radius: vars.rem(40);
+  padding: vars.rem(8) vars.rem(17) vars.rem(8) vars.rem(8);
+  user-select: none;
+  cursor: pointer;
+  gap: vars.rem(12);
+  height: vars.rem(60);
+  transition: 0.2s;
+  width: 100%;
+
+  &_gray {
+    background-color: vars.$light-gray;
+  }
+
+  &_green {
+    background-color: vars.$green;
+  }
+
+  @media (max-width: vars.$max-800) {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .previewImage {
+    display: flex;
+    align-items: center;
+    gap: vars.rem(12);
+  }
+
+  .contactImage {
+    @media (max-width: vars.$max-800) {
+      position: absolute;
+      left: vars.rem(8);
+    }
+
+    &_onlyMobile {
+      display: none;
+
+      @media (max-width: vars.$max-800) {
+        display: flex;
+      }
+    }
+  }
+
+  .contactPreview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: vars.rem(12);
+    font-weight: 400;
+    width: 100%;
+
+    @media (max-width: vars.$max-800) {
+      width: 100%;
+      margin-left: vars.rem(50);
+      justify-content: space-between;
+    }
+  }
+
+  .contactPostview {
+    display: flex;
+    align-items: center;
+    gap: vars.rem(12);
+    font-weight: 400;
+
+    @media (max-width: vars.$max-800) {
+      width: 100%;
+      margin-left: vars.rem(50);
+      justify-content: space-between;
+    }
+  }
+
+  .caption {
+    font-size: vars.rem(19);
+    font-weight: 500;
+    color: vars.$gray;
+
+    @media (max-width: vars.$max-800) {
+      color: vars.$black;
+    }
+  }
+
+  .contactIcon {
+    > svg {
+      > path {
+        //fill: saddlebrown;
+
+        &_gray {
+          fill: vars.$light-gray;
+        }
+
+        &_white {
+          fill: vars.$white;
+        }
+      }
+    }
+  }
+}
+
+.notSwitchContact {
+  display: flex;
+
+  &_gray {
+    background-color: vars.$light-gray;
+
+    &:hover {
+      background-color: vars.$gray;
+
+      .caption {
+        color: vars.$white;
+      }
+
+      .contactIcon {
+        > svg {
+          > path {
+            fill: vars.$white;
+          }
+        }
+      }
+    }
+  }
+
+  &_green {
+    background-color: vars.$green;
+
+    @media (max-width: vars.$max-800) {
+      background-color: vars.$light-gray;
+    }
+
+    &:hover {
+      background-color: vars.$light-green;
+
+      .caption {
+        color: vars.$white;
+      }
+
+      .contactIcon {
+        > svg {
+          > path {
+            fill: vars.$white;
+          }
+        }
+      }
+    }
+
+    .caption {
+      color: vars.$white;
+
+      @media (max-width: vars.$max-800) {
+        color: vars.$gray;
+      }
+    }
+
+    .contactIcon {
+      > svg {
+        > path {
+          fill: vars.$white;
+
+          @media (max-width: vars.$max-800) {
+            fill: vars.$gray;
+          }
+        }
+      }
+    }
+  }
+}

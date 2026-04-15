@@ -1,0 +1,73 @@
+@use "sass:math";
+
+@function rem($px) {
+  $result: math.div($px, 16) + rem;
+  @return $result;
+}
+
+@function em($px) {
+  $result: math.div($px, 16) + em;
+  @return $result;
+}
+
+// Цвета
+
+$green: #00A651;
+$light-green: #9DD2A8;
+$white: #FAFAFA;
+$light-gray: #EFEFEF;
+$gray: #58595B;
+$dark-gray: #29292B;
+$black: #0A0A0A;
+$light-border: #DEDEDE;
+$neutral-border: #D7DAE2;
+$link: #8A8B8C;
+$dark-shadow: #BABABA1A;
+$shadow: #454545;
+$light-shadow: #8F8F8F;
+$white-shadow: #D6D6D6;
+$white-shadow-2: #C7C7C7;
+$red: #A62400;
+$yellow: #EFCE7E;
+$light-yellow: #FDE189;
+$blue: #0099FF;
+$light-blue: #7CBADF;
+$bg-blue: #29A9EB;
+$bg-light-blue: #9DBFD2;
+$bg-pink: #FC60A8;
+$bg-light-pink: #FFCFE5;
+$bg-peach: #FFA69E;
+$bg-light-peach: #FFD3CF;
+$bg-light-green: #DBF4E0;
+$inactive: #D1D1D2;
+
+// Разрешение
+
+$max-1550: em(1550);
+$max-1500: em(1500);
+$max-1440: em(1440);
+$max-1400: em(1400);
+$max-1300: em(1300);
+$max-1250: em(1250);
+$max-1200: em(1200);
+$max-1150: em(1150);
+$max-1100: em(1100);
+$max-1050: em(1050);
+$max-1000: em(1000);
+$max-950: em(950);
+$max-900: em(900);
+$max-800: em(800);
+$max-700: em(700);
+$max-650: em(650);
+$max-600: em(600);
+$max-500: em(500);
+$max-400: em(400);
+$max-390: em(390);
+$max-320: em(320);
+
+
+$safe-area-bottom: env(safe-area-bottom);
+
+@mixin safe-area-bottom($offset: rem(0), $property: padding-bottom) {
+  #{$property}: calc(#{$safe-area-bottom} + #{$offset});
+}

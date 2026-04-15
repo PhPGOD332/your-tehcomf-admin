@@ -1,0 +1,23 @@
+@use '~/shared/styles/vars' as vars;
+
+.black {
+  color: vars.$black;
+}
+
+.gray {
+  color: vars.$gray;
+}
+
+.white {
+  color: vars.$white;
+}
+
+.subTitle {
+  font-size: vars.rem(50);
+  font-weight: 500;
+  line-height: 120%;
+
+  @media (max-width: vars.$max-1000) {
+    font-size: vars.rem(31);
+  }
+}

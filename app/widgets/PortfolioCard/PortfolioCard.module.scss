@@ -1,0 +1,196 @@
+@use '~/shared/styles/vars' as vars;
+
+.card {
+  min-width: vars.rem(295);
+
+  .imageBlock {
+    position: relative;
+    height: vars.rem(405);
+    width: 100%;
+    margin-bottom: vars.rem(40);
+    background-color: vars.$gray;
+    border-radius: vars.rem(20);
+    overflow: hidden;
+
+    .panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: vars.rem(10);
+      background-color: vars.$white;
+      border-bottom-left-radius: vars.rem(20);
+      padding: vars.rem(16) vars.rem(28);
+      position: absolute;
+      right: 0 !important;
+      left: auto !important;
+      top: 0 !important;
+      height: vars.rem(44) !important;
+      width: vars.rem(124) !important;
+      z-index: 2;
+
+      &:before {
+        content: '';
+        position: absolute;
+        bottom: vars.rem(-31);
+        right: vars.rem(-7);
+        width: vars.rem(40);
+        height: vars.rem(40);
+        background-color: vars.$white;
+        //clip-path: ellipse(50% 50% at 10% 90%);
+        mask: radial-gradient(circle at 10% 10%, transparent 55%, black 40%);
+        border-radius: 50%;
+        transform: rotate(-90deg);
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: vars.rem(-29.5);
+        top: vars.rem(-11);
+        width: vars.rem(40);
+        height: vars.rem(40);
+        background-color: vars.$white;
+        //clip-path: ellipse(50% 50% at 10% 90%);
+        mask: radial-gradient(circle at 15% 15%, transparent 50%, black 40%);
+        border-radius: 50%;
+        transform: rotate(-90deg);
+      }
+
+      .actionButton {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        cursor: pointer;
+
+        > svg {
+          max-width: 100%;
+
+          > path {
+            transition: .2s;
+          }
+        }
+
+        &:hover {
+          > svg {
+            > path {
+              fill: vars.$light-green;
+            }
+          }
+        }
+      }
+    }
+
+    .image {
+      object-fit: cover;
+    }
+  }
+
+  .description {
+    .tags {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: vars.rem(4);
+      margin-bottom: vars.rem(20);
+
+      .tag {
+        width: vars.rem(20);
+        height: vars.rem(20);
+        border-radius: 50%;
+
+        &_white {
+          background-color: vars.$white;
+          border: vars.rem(1.5) solid vars.$gray;
+        }
+
+        &_black {
+          background-color: vars.$black
+        }
+
+        &_gray {
+          background-color: vars.$gray;
+        }
+
+        &_green {
+          background-color: vars.$green;
+        }
+
+        &_yellow {
+          background-color: vars.$yellow;
+        }
+
+        &_blue {
+          background-color: vars.$blue;
+        }
+      }
+
+      @media (max-width: vars.$max-1000) {
+        margin-bottom: vars.rem(10);
+      }
+    }
+
+    .type {
+      margin-bottom: vars.rem(10);
+
+      .typeSpan {
+        font-size: vars.rem(13);
+        font-weight: 300;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: vars.$max-1000) {
+        margin-bottom: vars.rem(5);
+      }
+    }
+
+    .titleBlock {
+      margin-bottom: vars.rem(20);
+
+      .cardTitle {
+
+        @media (max-width: vars.$max-1000) {
+          font-size: vars.rem(31);
+        }
+      }
+
+      @media (max-width: vars.$max-1000) {
+        margin-bottom: vars.rem(10);
+      }
+    }
+
+    .categories {
+      display: flex;
+      gap: vars.rem(28);
+
+      .category {
+        position: relative;
+        font-size: vars.rem(19);
+        font-weight: 300;
+        color: vars.$gray;
+      }
+
+      .firstCategory {
+        &:after {
+          content: '';
+          position: absolute;
+          height: vars.rem(4);
+          width: vars.rem(4);
+          right: vars.rem(-16);
+          top: calc(50% - 2px);
+          border-radius: 50%;
+          background-color: vars.$gray;
+        }
+      }
+    }
+  }
+
+  @media (max-width: vars.$max-1000) {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  @media (max-width: vars.$max-950) {
+    width: 100%;
+  }
+}

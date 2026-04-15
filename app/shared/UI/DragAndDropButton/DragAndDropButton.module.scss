@@ -1,0 +1,112 @@
+@use '~/shared/styles/vars' as vars;
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+}
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+.draggableFormButton {
+  background-color: vars.$gray;
+  padding: vars.rem(8) vars.rem(10) vars.rem(8) vars.rem(8);
+  border-radius: vars.rem(30);
+  max-width: vars.rem(273);
+  overflow: hidden;
+  transition: background-color 0.2s;
+
+  &_success {
+    background-color: vars.$green;
+  }
+
+  .draggableWrapper {
+    display: flex;
+    align-items: center;
+    gap: vars.rem(16);
+    margin-left: vars.rem(-100);
+    width: max-content;
+    user-select: none;
+
+    .firstCaption {
+      display: inline-block;
+      color: #fff;
+      font-size: vars.rem(16);
+      font-weight: 500;
+    }
+
+    .iconButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      //padding: vars.rem(16) vars.rem(13);
+      width: vars.rem(44);
+      height: vars.rem(44);
+      background-color: vars.$white;
+      border-radius: 50%;
+      cursor: grabbing;
+
+      > svg {
+        transition: opacity 0.2s;
+      }
+    }
+
+    .secondCaption {
+      display: inline-block;
+      color: #fff;
+      font-size: vars.rem(16);
+      font-weight: 500;
+    }
+  }
+}
+
+.draggableLightButton {
+  background-color: #D2D3D4;
+  padding: vars.rem(4) vars.rem(12) vars.rem(4) vars.rem(8);
+  border-radius: vars.rem(30);
+  max-width: vars.rem(273);
+  overflow: hidden;
+  transition: background-color 0.2s;
+
+  &_success {
+    background-color: vars.$green;
+  }
+
+  .draggableWrapper {
+    display: flex;
+    align-items: center;
+    gap: vars.rem(16);
+    margin-left: vars.rem(-100);
+    width: max-content;
+    user-select: none;
+
+    .firstCaption {
+      display: inline-block;
+      color: #fff;
+      font-size: vars.rem(16);
+      font-weight: 500;
+    }
+
+    .iconButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: vars.rem(72);
+      height: vars.rem(72);
+      background-color: vars.$white;
+      border-radius: vars.rem(26);
+      cursor: grabbing;
+    }
+
+    .secondCaption {
+      display: inline-block;
+      color: #fff;
+      font-size: vars.rem(16);
+      font-weight: 500;
+    }
+  }
+}

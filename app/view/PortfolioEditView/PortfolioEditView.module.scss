@@ -1,0 +1,202 @@
+@use '~/shared/styles/vars' as vars;
+
+.portfolioView {
+  margin-bottom: vars.rem(74);
+
+
+  @media (max-width: vars.$max-1400) {
+    //width: calc(100% - 32px);
+    padding: 0 vars.rem(16);
+    padding: 0;
+  }
+}
+
+.titleBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: vars.rem(20);
+  text-align: center;
+  margin-top: vars.rem(130);
+  margin-bottom: vars.rem(42);
+
+  .title {
+    margin-bottom: vars.rem(16);
+
+    @media (max-width: vars.$max-1000) {
+      margin-bottom: vars.rem(5);
+    }
+  }
+
+  .subTitle {
+    color: vars.$gray !important;
+    margin-bottom: vars.rem(32);
+
+    @media (max-width: vars.$max-1000) {
+      font-size: vars.rem(19);
+      margin-bottom: vars.rem(10);
+    }
+  }
+
+  .actionButton {
+    padding: vars.rem(10) vars.rem(20);
+  }
+
+  @media (max-width: vars.$max-1300) {
+    padding: 0 vars.rem(16);
+  }
+}
+
+.formWrapper {
+
+
+  .form {
+    .formInput {
+      margin-bottom: vars.rem(20);
+    }
+
+    .priceInput {
+      width: vars.rem(300);
+    }
+  }
+}
+
+.photosBlock {
+  display: flex;
+  flex-direction: column;
+  gap: vars.rem(20);
+  margin-bottom: vars.rem(20);
+
+  .photosPreview {
+    background-color: vars.$light-gray;
+    border-radius: vars.rem(10);
+    padding: vars.rem(10) vars.rem(20);
+
+    .label {}
+
+    .photos {
+      display: flex;
+      gap: vars.rem(20);
+      flex-wrap: wrap;
+      margin-top: vars.rem(20);
+
+      .photo {
+        position: relative;
+        border-radius: vars.rem(10);
+        overflow: hidden;
+        width: vars.rem(200);
+
+        &:hover {
+          .previewTitle {
+            transform: translateY(0);
+          }
+        }
+
+        .photoPreview {
+          width: 100%;
+          height: 100%;
+        }
+
+        .deleteButton {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          top: vars.rem(10);
+          right: vars.rem(10);
+          z-index: 3;
+          padding: vars.rem(5);
+          border-radius: vars.rem(5);
+          background-color: rgba(vars.$white, .4);
+          border: none;
+          outline: none;
+          cursor: pointer;
+          transition: background-color .2s;
+
+          &:hover {
+            background-color: rgba(vars.$white, .8);
+          }
+        }
+
+        .previewTitle {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          display: inline-block;
+          width: 100%;
+          transform: translateY(100%);
+          transition: transform .2s;
+          background-color: rgba(vars.$white, .8);
+          font-size: vars.rem(10);
+          border-radius: vars.rem(5);
+          padding: vars.rem(5);
+          cursor: text;
+          word-wrap: break-word;
+          color: vars.$black;
+        }
+      }
+    }
+  }
+
+  .photosLoader {
+    display: flex;
+    align-items: center;
+    gap: vars.rem(50);
+
+    .inputLabel {
+      display: flex;
+      flex-direction: row;
+      gap: vars.rem(8);
+      color: vars.$gray;
+      font-weight: 500;
+      text-align: start;
+      transition: color 0.2s;
+
+      &:hover {
+        color: rgba(vars.$gray, 0.5);
+      }
+
+      &_active {
+        color: vars.$green;
+
+        &:hover {
+          color: rgba(vars.$green, 0.5);
+        }
+      }
+    }
+
+    .labelPhotos {
+      z-index: 10;
+      padding: vars.rem(16) vars.rem(28);
+      cursor: pointer;
+      background-color: vars.$green;
+      border-radius: vars.rem(20);
+      border: none;
+      transition: 0.2s;
+      text-align: center;
+      color: vars.$white;
+      flex-grow: 1;
+
+      &:hover {
+        background-color: vars.$light-green;
+      }
+
+      .buttonCaption {
+        font-size: vars.rem(16);
+        color: vars.$white;
+        font-weight: 600;
+      }
+    }
+
+    .photoInput {
+      opacity: 0;
+      visibility: hidden;
+      display: none;
+    }
+  }
+
+  .error {
+    font-size: vars.rem(20);
+    color: vars.$red;
+  }
+}

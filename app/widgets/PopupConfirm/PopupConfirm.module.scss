@@ -1,0 +1,51 @@
+@use '~/shared/styles/vars' as vars;
+
+.popupWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(vars.$white, 0.5);
+  z-index: 100;
+  transition: .3s;
+
+  &_hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .popupContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: vars.rem(30);
+    padding: vars.rem(36) vars.rem(40);
+    background-color: vars.$white;
+    border-radius: vars.rem(20);
+    width: vars.rem(480);
+    box-shadow: vars.rem(3) vars.rem(10) vars.rem(22) 0 vars.$shadow;
+    //bottom: vars.rem(-665);
+    transform: translateY(vars.rem(0));
+
+    .question {
+      font-size: vars.rem(20);
+    }
+
+    .buttons {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: vars.rem(20);
+      width: 100%;
+
+      .answerButton {
+        padding: vars.rem(10) vars.rem(20);
+        width: vars.rem(100);
+      }
+    }
+  }
+}

@@ -1,0 +1,86 @@
+@use '~/shared/styles/vars' as vars;
+
+.inputLabel {
+  display: flex;
+  flex-direction: column;
+  gap: vars.rem(8);
+  color: vars.$gray;
+  font-weight: 500;
+  text-align: start;
+  transition: color 0.2s;
+  width: 100%;
+
+  &:hover {
+    color: rgba(vars.$gray, 0.5);
+  }
+
+  &_active {
+    color: vars.$green;
+
+    &:hover {
+      color: rgba(vars.$green, 0.5);
+    }
+  }
+
+  &_error {
+    color: vars.$red;
+
+    &:hover {
+      color: rgba(vars.$red, 0.5);
+
+      .errorSpan {
+        color: rgba(vars.$red, 0.5);
+      }
+    }
+  }
+
+  &_placeholderError {
+    .textInput {
+      transition: 0.3s;
+      color: vars.$red;
+
+      &::placeholder {
+        transition: color 0.3s !important;
+        color: vars.$red !important;
+      }
+    }
+
+    &:hover {
+      .textInput {
+        color: rgba(vars.$red, 0.5);
+
+        &::placeholder {
+          transition: 0.3s !important;
+          color: rgba(vars.$red, 0.5) !important;
+        }
+      }
+
+      .errorSpan {
+        display: none;
+      }
+    }
+  }
+
+  .textInput {
+    font-size: vars.rem(16);
+    font-weight: 600;
+    background-color: vars.$light-gray;
+    padding: vars.rem(8);
+    border-radius: vars.rem(10);
+    border: none;
+    outline: none;
+    color: vars.$black;
+
+    &::placeholder {
+      font-weight: 300;
+      color: rgba(vars.$gray, 0.3);
+    }
+  }
+
+  .errorSpan {
+    color: vars.$red;
+    font-size: vars.rem(10);
+    font-weight: 400;
+    transition: 0.2s;
+  }
+}

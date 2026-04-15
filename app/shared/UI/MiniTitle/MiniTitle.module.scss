@@ -1,0 +1,19 @@
+@use '~/shared/styles/vars' as vars;
+
+.black {
+  color: vars.$black;
+}
+
+.gray {
+  color: vars.$gray;
+}
+
+.white {
+  color: vars.$white;
+}
+
+.miniTitle {
+  font-size: vars.rem(31);
+  font-weight: 500;
+  line-height: 140%;
+}

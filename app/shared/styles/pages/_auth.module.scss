@@ -1,0 +1,19 @@
+@use '~/shared/styles/vars' as vars;
+
+.gifBlock {
+  width: vars.rem(100);
+  height: vars.rem(100);
+}
+
+.main {
+  display: flex;
+}
+
+.content {
+  padding: vars.rem(20) vars.rem(20);
+  width: 100%;
+
+  @media (max-width: vars.$max-950) {
+    width: calc(100% - 300px);
+  }
+}

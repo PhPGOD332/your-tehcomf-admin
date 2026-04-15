@@ -1,0 +1,61 @@
+@use "./vars" as vars;
+
+* {
+  font-family: 'Onest', sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  color: vars.$black
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: vars.$white;
+}
+
+.overflowYHidden {
+  overflow-y: hidden;
+}
+
+.overflowStartYHidden {
+  overflow-y: hidden;
+}
+
+body.white {
+  background-color: vars.$white;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.container {
+  max-width: vars.rem(1240);
+  margin: 0 auto;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.loading {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

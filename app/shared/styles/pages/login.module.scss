@@ -1,0 +1,12 @@
+@use '../vars' as vars;
+
+.wrapper {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: vars.rem(100);
+  background-color: vars.$light-gray;
+}
