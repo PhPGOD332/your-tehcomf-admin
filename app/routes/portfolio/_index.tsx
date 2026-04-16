@@ -3,6 +3,9 @@ import { observer } from "mobx-react-lite";
 import PortfolioView from "~/view/PortfolioView/PortfolioView";
 import type { Route } from "./+types/_index";
 import { Context } from "~/root";
+import GifImage from "~/shared/UI/GifImage/GifImage";
+import Gif from "~/data/images/gifs/loading.gif";
+import styles from "~/shared/styles/pages/_auth.module.scss";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -22,9 +25,11 @@ export async function clientLoader() {
 const _index = () => {
     const { rootStore } = useContext(Context);
 
-    if (rootStore.isLoading) {
-        return <>Загрузка...</>;
-    }
+    // if (rootStore.isLoading) {
+    //     return <div className={'loading'}>
+    //         <GifImage src={Gif} classNames={styles.gifBlock}/>
+    //     </div>;
+    // }
 
     return (
         <PortfolioView

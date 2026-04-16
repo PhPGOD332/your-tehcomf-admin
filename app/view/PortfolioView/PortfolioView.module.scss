@@ -40,6 +40,23 @@
 
   .actionButton {
     padding: vars.rem(10) vars.rem(20);
+    cursor: pointer;
+    background-color: vars.$green;
+    border-radius: vars.rem(40);
+    border: none;
+    transition: 0.2s;
+    color: vars.$white;
+    font-weight: 600;
+
+    &:hover {
+      background-color: vars.$light-green;
+    }
+
+    .buttonCaption {
+      font-size: vars.rem(16);
+      color: vars.$white;
+      font-weight: 600;
+    }
   }
 
   @media (max-width: vars.$max-1300) {

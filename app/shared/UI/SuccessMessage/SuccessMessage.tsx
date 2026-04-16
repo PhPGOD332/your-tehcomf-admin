@@ -3,34 +3,29 @@ import styles from './SuccessMessage.module.scss';
 
 interface MessageProps {
     message: string;
-    activate: boolean;
-    setActivate: (isActive: boolean) => void;
 }
 
 const SuccessMessage = (
     {
         message,
-        activate,
-        setActivate
     }: MessageProps
 ) => {
-
-    const activateHandler = (isActive: boolean) => {
-        if (isActive) {
-            const timeout = setTimeout(() => {
-                setActivate(false)
-            }, 2000);
-
-            clearTimeout(timeout);
-        }
-    }
+    const [active, setActive] = useState(false);
 
     useEffect(() => {
-        activateHandler(activate);
-    }, [activate]);
+        setActive(true);
+    }, []);
+
+    useEffect(() => {
+        if (active) {
+            setTimeout(() => {
+                setActive(false);
+            }, 2000);
+        }
+    }, [active]);
 
     return (
-        <div className={`${styles.wrapper} ${activate && styles.wrapper_active}`}>
+        <div className={`${styles.wrapper} ${active && styles.wrapper_active}`}>
             <span className={styles.message}>{message}</span>
         </div>
     );

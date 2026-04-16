@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styles from './PortfolioCard.module.scss';
-import type {IWork} from "~/types/IWork";
+import type { IWork } from "~/types/IWork";
 import MiniTitle from "~/shared/UI/MiniTitle/MiniTitle";
 import SliderImagesHover from "~/widgets/SliderHover/SliderImagesHover";
-import {Link} from "react-router";
-import {pagesLinks} from "~/shared/constants";
+import { Link } from "react-router";
+import { pagesLinks } from "~/shared/constants";
+import { ButtonType } from "~/shared/UI/GreenButton/GreenButton";
 
 interface ICardProps {
     work: IWork;
@@ -47,6 +48,7 @@ const PortfolioCard = React.memo((
                     <button
                         className={styles.actionButton}
                         onClick={() => openPopupDeleteHandler(work)}
+                        type={ButtonType.BUTTON}
                     >
                         <svg width="30" height="30" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path

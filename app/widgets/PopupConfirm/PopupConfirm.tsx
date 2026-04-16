@@ -1,15 +1,13 @@
 import React, {useEffect, useRef} from 'react';
 import {observer} from "mobx-react-lite";
 import styles from './PopupConfirm.module.scss';
-import MiniTitle from "~/shared/UI/MiniTitle/MiniTitle";
-import GreenButton from "~/shared/UI/GreenButton/GreenButton";
+import GreenButton, {ButtonType} from "~/shared/UI/GreenButton/GreenButton";
 
 interface PopupProps {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
     answerHandler: (answer: boolean) => void;
     question: string;
-    deleteId: number;
 }
 
 const PopupConfirm = (
@@ -18,7 +16,6 @@ const PopupConfirm = (
         setIsOpen,
         answerHandler,
         question,
-        deleteId
     }: PopupProps
 ) => {
     const popupBgRef = useRef<HTMLDivElement | null>(null);
@@ -32,8 +29,10 @@ const PopupConfirm = (
     }, [isOpen]);
 
     const bgPopupHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === popupBgRef.current)
+        if (e.target === popupBgRef.current) {
             setIsOpen(false);
+            answerHandler(false);
+        }
     }
 
     return (
@@ -47,13 +46,14 @@ const PopupConfirm = (
                     <GreenButton
                         classNames={styles.answerButton}
                         onClick={() => answerHandler(true)}
+                        type={ButtonType.BUTTON}
                     >Да</GreenButton>
                     <GreenButton
                         classNames={styles.answerButton}
                         onClick={() => setIsOpen(false)}
+                        type={ButtonType.BUTTON}
                     >Нет</GreenButton>
                 </div>
-
             </div>
         </div>
     );

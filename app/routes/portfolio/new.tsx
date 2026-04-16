@@ -1,32 +1,31 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { observer } from "mobx-react-lite";
-import { Context } from "~/root";
-import { useNavigate, useParams } from "react-router";
-import PortfolioEditView from "~/view/PortfolioEditView/PortfolioEditView";
-import type { Route } from "./+types/$work";
+import type { Route } from "./+types/new";
 import GifImage from "~/shared/UI/GifImage/GifImage";
 import Gif from "~/data/images/gifs/loading.gif";
 import styles from "~/shared/styles/pages/_auth.module.scss";
+import { useNavigate, useParams } from "react-router";
+import { Context } from "~/root";
+import PortfolioNewView from "~/view/PortfolioNewView/PortfolioNewView";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     const { rootStore } = await import('~/store/store');
-    const work = await rootStore.getWork(params.name ?? '');
     const types = await rootStore.getTypes();
     const filterColors = await rootStore.getFilterColors();
     const colors = await rootStore.getColors();
     const layouts = await rootStore.getLayouts();
     const styles = await rootStore.getStyles();
 
-    return { work, types, filterColors, colors, layouts, styles };
+    return { types, filterColors, colors, layouts, styles };
 }
 
 export function HydrateFallback() {
     return <div className={'loading'}>
-        <GifImage src={Gif} classNames={styles.gifBlock}/>
+        <GifImage src={Gif} classNames={styles.gifBlock} />
     </div>;
 }
 
-const Work = ({loaderData}: Route.ComponentProps) => {
+const New = ({ loaderData }: Route.ComponentProps) => {
     const [isClient, setIsClient] = useState<boolean>(false);
     const navigate = useNavigate();
     const { rootStore } = useContext(Context);
@@ -56,9 +55,8 @@ const Work = ({loaderData}: Route.ComponentProps) => {
     }
 
     return (
-        <PortfolioEditView
-            title={`Редактирование работы`}
-            work={work}
+        <PortfolioNewView
+            title={`Создание работы`}
             types={types}
             filterColors={filterColors}
             colors={colors}
@@ -68,4 +66,4 @@ const Work = ({loaderData}: Route.ComponentProps) => {
     );
 };
 
-export default observer(Work);
+export default observer(New);

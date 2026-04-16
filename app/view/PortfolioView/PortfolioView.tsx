@@ -8,6 +8,9 @@ import PortfolioCard from "~/widgets/PortfolioCard/PortfolioCard";
 import GreenButton from "~/shared/UI/GreenButton/GreenButton";
 import PopupConfirm from "~/widgets/PopupConfirm/PopupConfirm";
 import {rootStore} from "~/store/store";
+import {Link} from "react-router";
+import {pagesLinks} from "~/shared/constants";
+import SuccessMessage from "~/shared/UI/SuccessMessage/SuccessMessage";
 
 interface PortfolioProps {
     title: string;
@@ -22,13 +25,14 @@ const PortfolioView = (
 ) => {
     const [currentCount, setCurrentCount] = useState<number>(11);
     const step = 6;
-    const [allWorks, ] = useState<IWork[]>(works ?? []);
+    const [allWorks, setAllWorks] = useState<IWork[]>(works ?? []);
     const [currentWorks, setCurrentWorks] = useState<IWork[]>([]);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [deleteId, setDeleteId] = useState<number>(null);
+    const [statusNotes, setStatusNotes] = useState<React.ReactNode[]>([]);
 
     const getCountedWorks = (works: IWork[]) => {
-        return works.filter((work, num) => num <= currentCount)
+        return works.filter((work, num) => num <= currentCount);
     }
 
     useEffect(() => {
@@ -38,6 +42,16 @@ const PortfolioView = (
     useEffect(() => {
         setCurrentWorks(works.filter((work, num) => num - 1 <= currentCount));
     }, [currentCount]);
+
+    const deleteStatusNote = () => {
+        if (statusNotes.length > 0) {
+            setTimeout(() => {
+                const reversedStatusNotes = statusNotes;
+                reversedStatusNotes.shift();
+                setStatusNotes(reversedStatusNotes);
+            }, 3000);
+        }
+    }
 
     const moreClickHandle = () => {
         setCurrentCount(currentCount + step);
@@ -49,9 +63,23 @@ const PortfolioView = (
     }
 
     const confirmDeleteHandler = async (answer: boolean) => {
+        setIsOpen(false);
         if (answer) {
-            await rootStore.deleteWork(deleteId);
-            setDeleteId(null);
+            const response = await rootStore.deleteWork(deleteId);
+
+            if (response && response.success) {
+                setDeleteId(null);
+                const works = await rootStore.getAllWorks();
+                setAllWorks(works);
+                setCurrentWorks(getCountedWorks(works));
+
+                setStatusNotes([...statusNotes, <SuccessMessage message={'Работа успешно удалена'} key={statusNotes.length} />]);
+                deleteStatusNote();
+            } else {
+                setStatusNotes([...statusNotes, <SuccessMessage message={'При удалении произошла ошибка'} key={statusNotes.length} />]);
+            }
+        } else {
+            setStatusNotes([...statusNotes, <SuccessMessage message={'Операция отменена пользователем'} key={statusNotes.length} />]);
         }
     }
 
@@ -61,7 +89,7 @@ const PortfolioView = (
                 <div className={'container'}>
                     <div className={styles.titleBlock}>
                         <SubTitle classNames={styles.title}>{title}</SubTitle>
-                        <GreenButton classNames={styles.actionButton}>Создать работу</GreenButton>
+                        <Link to={`${pagesLinks.portfolio}/new`} className={styles.actionButton}>Создать работу</Link>
                     </div>
                     <div
                         className={`${styles.portfolioBlock} ${!currentWorks || currentWorks.length === 0 ? styles.portfolioBlock_empty : ''}`}>
@@ -93,9 +121,9 @@ const PortfolioView = (
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 question={'Вы уверены, что хотите удалить работу?'}
-                deleteId={deleteId}
                 answerHandler={confirmDeleteHandler}
             />
+            {statusNotes ?? ''}
         </>
     );
 };

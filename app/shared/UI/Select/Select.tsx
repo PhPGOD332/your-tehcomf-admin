@@ -23,8 +23,8 @@ const Select = (
         label
     }: SelectProps
 ) => {
-    const [currentOption, setCurrentOption] = useState<string>(initialOption.name ?? '');
-    const [currentCaption, setCurrentCaption] = useState<string>(initialOption.caption ?? options[0].caption ?? '')
+    const [currentOption, setCurrentOption] = useState<string>(initialOption ? initialOption.name ?? null : null);
+    const [currentCaption, setCurrentCaption] = useState<string>(initialOption ? initialOption.caption ?? options[0].caption ?? caption : caption)
     const [isSelectActive, setIsSelectActive] = useState<boolean>(false);
 
     useEffect(() => {

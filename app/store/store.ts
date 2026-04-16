@@ -140,16 +140,18 @@ export class Store {
         }
     }
 
-    async deleteWork(workId: number): Promise<void> {
+    async deleteWork(workId: number): Promise<{success: true}> {
         this.isLoading = true;
 
         try {
-            const status = await PortfolioService.deleteWork(workId);
+            const response = await PortfolioService.deleteWork(workId);
 
-            if (status) {
+            if (response.status === 200) {
                 runInAction(() => {
                     this.setWorks(this.works.filter((work) => work.id !== workId));
                 });
+
+                return response.data;
             }
         } catch (e) {
             console.log()
@@ -160,7 +162,7 @@ export class Store {
         }
     }
 
-    async updateWork(work: IWork, newImages: File[], editorNewFiles: File[]): Promise<IWork> {
+    async updateWork(work: IWork, newImages: File[], editorNewFiles: File[]): Promise<IWork | null> {
         const patchWork: IUploadWork = {
             ...work,
             typeId: work.type.id,
@@ -191,8 +193,10 @@ export class Store {
 
                 console.log(imageResponse);
 
-                if (!imageResponse.data.id || imageResponse.status !== 201) {
-                    return {} as IWork;
+                if (!imageResponse
+                    || !imageResponse.data.id
+                    || imageResponse.status !== 201) {
+                    return null;
                 }
 
                 imagesIds.push(imageResponse.data.id);

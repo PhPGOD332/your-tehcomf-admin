@@ -1,22 +1,24 @@
 @use '~/shared/styles/vars' as vars;
 
 .wrapper {
-  position: absolute;
+  position: fixed;
   top: vars.rem(50);
-  right: 0;
-  transform: translateX(vars.rem(200));
-  background-color: rgba(vars.$white, .5);
+  right: vars.rem(10);
+  transform: translateX(vars.rem(500));
+  background-color: rgba(vars.$green, 1);
   padding: vars.rem(10);
-  border-radius: vars.rem(20);
+  border-radius: vars.rem(10);
   transition: transform 1s;
+  z-index: 10;
+
 
   &_active {
-    transform: translateX(0);
+    transform: translateX(vars.rem(-100));
   }
 
   .message {
-    font-size: vars.rem(14);
+    font-size: vars.rem(12);
     font-weight: 500;
-
+    color: vars.$white;
   }
 }

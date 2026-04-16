@@ -29,7 +29,6 @@ const AuthLayout = () => {
                     navigate('/login');
                 }
             } catch (e) {
-                console.log(e.message);
                 navigate('/login');
             } finally {
                 setIsChecking(false);
@@ -41,7 +40,7 @@ const AuthLayout = () => {
 
     if (isChecking) {
         return (
-            <div className={'loading'}>
+            <div className={'global-loading'}>
                 <GifImage src={Gif} classNames={styles.gifBlock} />
             </div>
         );

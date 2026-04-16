@@ -3,8 +3,9 @@
 .wrapper {
   position: relative;
   min-height: 100vh;
-  width: vars.rem(300);
-  background-color: vars.$light-gray;
+  width: vars.rem(400);
+  background-color: transparent;
+  padding: vars.rem(10) vars.rem(20);
 }
 
 .content {
@@ -12,66 +13,81 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: vars.rem(20);
-  height: 100vh;
+  height: calc(100vh - 20px);
   top: vars.rem(20);
   bottom: vars.rem(20);
-  padding-bottom: vars.rem(20);
+  padding: vars.rem(20) 0;
+  width: vars.rem(300);
+  background-color: vars.$light-gray;
+  border-radius: vars.rem(10);
+  overflow: hidden;
 
-  .list {
+  .menu {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: vars.rem(20);
-    width: 100%;
+    justify-content: space-between;
+    flex-grow: 1;
 
-    .item {
+    .list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: vars.rem(20);
       width: 100%;
-      padding: vars.rem(30) vars.rem(20);
-      text-align: center;
-      background-color: vars.$light-gray;
-      cursor: pointer;
-      transition: .2s;
 
-      &:hover {
-        color: vars.$green;
-        background-color: vars.$white;
-      }
-
-      &_active {
-        color: vars.$green;
-        background-color: vars.$white;
-        transition: background-color .2s;
+      .item {
+        width: 100%;
+        padding: vars.rem(30) vars.rem(20);
+        text-align: center;
+        background-color: vars.$light-gray;
+        cursor: pointer;
+        transition: .2s;
+        border-radius: vars.rem(10);
 
         &:hover {
-          background-color: vars.$light-gray;
+          color: vars.$green;
+          text-decoration: underline;
+          background-color: vars.$white;
+        }
+
+        &_active {
+          color: vars.$green;
+          background-color: vars.$white;
+          transition: background-color .2s;
+          text-decoration: underline;
+
+          &:hover {
+            background-color: vars.$white;
+          }
         }
       }
     }
-  }
 
-  .profile {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: vars.rem(15);
-    width: 100%;
-    //border-top: vars.rem(1) solid vars.$gray;
-    padding: vars.rem(10) vars.rem(20);
-
-    .button {
+    .profile {
       display: flex;
       align-items: center;
-      justify-content: center;
-      width: vars.rem(25);
-      height: vars.rem(25);
-      background-color: vars.$light-gray;
-      cursor: pointer;
-      border: none;
-      border-radius: vars.rem(16);
-      box-shadow: 0 0 vars.rem(5) vars.rem(5) rgba(vars.$light-gray, 0.5);
+      justify-content: flex-start;
+      gap: vars.rem(15);
+      width: 100%;
+      //border-top: vars.rem(1) solid vars.$gray;
+      padding: vars.rem(10) vars.rem(20);
+
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: vars.rem(25);
+        height: vars.rem(25);
+        background-color: vars.$light-gray;
+        cursor: pointer;
+        border: none;
+        border-radius: vars.rem(16);
+        box-shadow: 0 0 vars.rem(5) vars.rem(5) rgba(vars.$light-gray, 0.5);
+      }
     }
   }
 }

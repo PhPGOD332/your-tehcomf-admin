@@ -1,28 +1,27 @@
 import React, {useContext, useEffect, useState} from 'react';
-import styles from './PortfolioEditView.module.scss';
-import type {IWork} from "~/types/IWork";
-import SubTitle from "~/shared/UI/SubTitle/SubTitle";
-import GreenButton, {ButtonType} from "~/shared/UI/GreenButton/GreenButton";
+import styles from './PortfolioNewView.module.scss';
 import {observer} from "mobx-react-lite";
-import {useForm} from "react-hook-form";
-import TextInput, {InputType} from "~/shared/UI/TextInput/TextInput";
-import type {TFormPortfolioInputs} from "~/types/TFormInputs";
-import LexkitEditor from "~/shared/UI/LexkitEditor/LexkitEditor";
-import Select from "~/shared/UI/Select/Select";
-import {Context} from "~/root";
+import type {IWork} from "~/types/IWork";
 import type {IFilterType} from "~/types/PortfolioFilters/IFilterType";
 import type {IFilterColor} from "~/types/PortfolioFilters/IFilterColor";
 import type {IColor} from "~/types/IColor";
 import type {IFilterLayout} from "~/types/PortfolioFilters/IFilterLayout";
 import type {IFilterStyle} from "~/types/PortfolioFilters/IFilterStyle";
+import {useForm} from "react-hook-form";
+import type {TFormPortfolioInputs} from "~/types/TFormInputs";
+import {Context} from "~/root";
 import type {IBlobImage, IImage} from "~/types/IImage";
-import {dropOrChangeHandler} from "~/shared/utils/dropOrChangeHandler";
+import SubTitle from "~/shared/UI/SubTitle/SubTitle";
+import GreenButton, {ButtonType} from "~/shared/UI/GreenButton/GreenButton";
+import TextInput, {InputType} from "~/shared/UI/TextInput/TextInput";
 import NumInput from "~/shared/UI/NumInput/NumInput";
+import Select from "~/shared/UI/Select/Select";
+import {dropOrChangeHandler} from "~/shared/utils/dropOrChangeHandler";
+import LexkitEditor from "~/shared/UI/LexkitEditor/LexkitEditor";
 import SuccessMessage from "~/shared/UI/SuccessMessage/SuccessMessage";
 
 interface ViewProps {
     title: string;
-    work: IWork;
     types: IFilterType[];
     filterColors: IFilterColor[];
     colors: IColor[];
@@ -30,10 +29,9 @@ interface ViewProps {
     filterStyles: IFilterStyle[];
 }
 
-const PortfolioEditView = (
+const PortfolioNewView = (
     {
         title,
-        work,
         types,
         filterColors,
         colors,
@@ -48,9 +46,8 @@ const PortfolioEditView = (
         setError
     } = useForm<TFormPortfolioInputs>({ mode: 'onChange', reValidateMode: 'onChange' });
     const { rootStore } = useContext(Context);
-    const [editorText, setEditorText] = useState<string>(work.description ?? '');
-    const [currWork, setCurrWork] = useState<IWork>(work);
-    const [photos, setPhotos] = useState<IImage[]>(work.images);
+    const [editorText, setEditorText] = useState<string>('');
+    const [currWork, setCurrWork] = useState<IWork>({} as IWork);
     const [newPhotos, setNewPhotos] = useState<IBlobImage[]>([]);
     const [files, setFiles] = useState<File[]>([]);
     const [editorNewFiles, setEditorNewFiles] = useState<File[]>([]);
@@ -58,34 +55,27 @@ const PortfolioEditView = (
     const [statusNotes, setStatusNotes] = useState<React.ReactNode[]>([]);
 
     const changeTypeHandler = (typeName: string) => {
-        setCurrWork({...work, type: rootStore.types.find(type => type.name === typeName)});
+        setCurrWork({...currWork, type: rootStore.types.find(type => type.name === typeName)});
     }
 
     const changeColorHandler = (colorName: string) => {
-        setCurrWork({...work, color: rootStore.filterColors.find(filterColor => filterColor.name === colorName)});
+        setCurrWork({...currWork, color: rootStore.filterColors.find(filterColor => filterColor.name === colorName)});
     }
 
     const changeBodyColorHandler = (colorName: string) => {
-        setCurrWork({...work, bodyColor: rootStore.colors.find(color => color.name === colorName)});
+        setCurrWork({...currWork, bodyColor: rootStore.colors.find(color => color.name === colorName)});
     }
 
     const changeTableTopColorHandler = (colorName: string) => {
-        setCurrWork({...work, tableTopColor: rootStore.colors.find(color => color.name === colorName)});
+        setCurrWork({...currWork, tableTopColor: rootStore.colors.find(color => color.name === colorName)});
     }
 
     const changeLayoutHandler = (layoutName: string) => {
-        setCurrWork({...work, layout: rootStore.layouts.find(layout => layout.name === layoutName)});
+        setCurrWork({...currWork, layout: rootStore.layouts.find(layout => layout.name === layoutName)});
     }
 
     const changeStyleHandler = (styleName: string) => {
-        setCurrWork({...work, style: rootStore.styles.find(style => style.name === styleName)});
-    }
-
-    const deleteImageHandler = (photoSrc: string) => {
-        const images = [...photos];
-
-        const newPhotos = images.filter(image => image.src !== photoSrc);
-        setPhotos(newPhotos);
+        setCurrWork({...currWork, style: rootStore.styles.find(style => style.name === styleName)});
     }
 
     const deleteNewImageHandler = (photoTitle: string) => {
@@ -150,7 +140,7 @@ const PortfolioEditView = (
 
     const submitHandler = async (data: IWork) => {
 
-        if (!photos && !newPhotos.length) {
+        if (!newPhotos.length) {
             setError("images", {
                 message: "Добавьте хотя бы одну фотографию"
             })
@@ -166,9 +156,11 @@ const PortfolioEditView = (
         updateWork.layout = currWork.layout;
         updateWork.style = currWork.style;
         updateWork.description = editorText;
-        updateWork.images = photos;
+        updateWork.images = [];
 
         const work = await rootStore.updateWork(updateWork, files, editorNewFiles)
+
+        console.log(work)
 
         if (work) {
             setStatusNotes([...statusNotes, <SuccessMessage message={'Работа успешно сохранена'} key={statusNotes.length} />]);
@@ -176,7 +168,6 @@ const PortfolioEditView = (
             setCurrWork(work);
             setFiles([]);
             setNewPhotos([]);
-            setPhotos(work.images);
             setEditorText(work.description);
             setEditorNewFiles([]);
         } else {
@@ -197,7 +188,7 @@ const PortfolioEditView = (
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setCurrWork({...work, description: editorText});
+            setCurrWork({...currWork, description: editorText});
         }, 1000);
 
         return clearTimeout(timeout);
@@ -332,118 +323,50 @@ const PortfolioEditView = (
                             <Select
                                 caption={'Тип'}
                                 options={types}
-                                initialOption={work.type}
+                                initialOption={currWork.type}
                                 changeHandle={changeTypeHandler}
                                 label={'Тип'}
                             />
                             <Select
                                 caption={'Палитра'}
                                 options={filterColors}
-                                initialOption={work.color}
+                                initialOption={currWork.color}
                                 changeHandle={changeColorHandler}
                                 label={'Палитра'}
                             />
                             <Select
                                 caption={'Цвет корпуса'}
                                 options={colors}
-                                initialOption={work.bodyColor}
+                                initialOption={currWork.bodyColor}
                                 changeHandle={changeBodyColorHandler}
                                 label={'Цвет корпуса'}
                             />
                             <Select
                                 caption={'Цвет столешницы'}
                                 options={colors}
-                                initialOption={work.tableTopColor}
+                                initialOption={currWork.tableTopColor}
                                 changeHandle={changeTableTopColorHandler}
                                 label={'Цвет столешницы'}
                             />
                             <Select
                                 caption={'Планировка'}
                                 options={layouts}
-                                initialOption={work.layout}
+                                initialOption={currWork.layout}
                                 changeHandle={changeLayoutHandler}
                                 label={'Планировка'}
                             />
                             <Select
                                 caption={'Стиль'}
                                 options={filterStyles}
-                                initialOption={work.style}
+                                initialOption={currWork.style}
                                 changeHandle={changeStyleHandler}
                                 label={'Стиль'}
                             />
                             <div className={styles.photosBlock}>
-                                <div className={styles.photosPreview}>
-                                    <label className={styles.label}>Старые фото</label>
-                                    {photos.length > 0 &&
-									    <div className={styles.photos}>
-                                            {photos.map((photo, num) =>
-                                                <div className={styles.photo} key={num}>
-                                                    <img
-                                                        src={photo.src}
-                                                        alt={`Фото ${num + 1}`}
-                                                        className={styles.photoPreview}
-                                                    />
-                                                    <button
-                                                        type={'button'}
-                                                        className={styles.deleteButton}
-                                                        onClick={() => {
-                                                            deleteImageHandler(photo.src)
-                                                        }}
-                                                    >
-                                                        <svg width="20" height="20" viewBox="0 0 64 64" fill="none"
-                                                             xmlns="http://www.w3.org/2000/svg">
-                                                            <g clipPath="url(#clip0_5058_2390)">
-                                                                <path
-                                                                    d="M41.3776 32.005L62.0532 11.3347C64.6489 8.73827 64.6489 4.54874 62.0532 1.95234C59.4574 -0.644058 55.2688 -0.644058 52.673 1.95234L31.9975 22.6227L11.327 1.9473C8.73117 -0.6491 4.54263 -0.6491 1.94684 1.9473C-0.648947 4.5437 -0.648947 8.73323 1.94684 11.3296L22.6224 32L1.94684 52.6704C-0.648947 55.2668 -0.648947 59.4563 1.94684 62.0527C4.54767 64.6491 8.75133 64.6491 11.327 62.0527L32.0025 41.3823L52.6781 62.0527C55.2739 64.6491 59.4624 64.6491 62.0582 62.0527C64.6338 59.4563 64.6338 55.2668 62.033 52.6653L41.3776 32.005Z"
-                                                                    fill="#00A651"/>
-                                                            </g>
-                                                            <defs>
-                                                                <clipPath id="clip0_5058_2390">
-                                                                    <rect width="64" height="64" fill="white"/>
-                                                                </clipPath>
-                                                            </defs>
-                                                        </svg>
-                                                    </button>
-                                                    <p className={styles.previewTitle}>{photo.src}</p>
-                                                </div>
-                                            )}
-									    </div>
-                                    }
-                                </div>
-                                <div className={styles.photosLoader}>
-                                    <label htmlFor="" className={styles.inputLabel}>
-                                        Фото
-                                    </label>
-                                    <label htmlFor="photos" className={styles.labelPhotos}>
-                                        {!drag ? 'Добавить новые фото' : 'Отпустите изображения'}
-                                    </label>
-                                    <input
-                                        id={'photos'}
-                                        className={styles.photoInput}
-                                        type="file"
-                                        {...register("images", {
-                                            value: photos
-                                        })}
-                                        multiple
-                                        onChange={(e) => {
-                                            dropOrChangeHandler(
-                                                e,
-                                                files,
-                                                setDrag,
-                                                setFiles,
-                                                setNewPhotos
-                                            )
-                                        }}
-                                        onDragStart={e => dragStartHandler(e)}
-                                        onDragLeave={e => dragLeaveHandler(e)}
-                                        onDragOver={e => dragStartHandler(e)}
-                                        onDrop={e => dropHandler(e)}
-                                    />
-                                </div>
                                 {newPhotos.length > 0 &&
-								    <div className={styles.photosPreview}>
-									    <label className={styles.label}>Новые фото</label>
-									    <div className={styles.photos}>
+				                    <div className={styles.photosPreview}>
+					                    <label className={styles.label}>Новые фото</label>
+					                    <div className={styles.photos}>
                                             {newPhotos.map((photo, num) =>
                                                 <div className={styles.photo} key={num}>
                                                     <img
@@ -475,10 +398,42 @@ const PortfolioEditView = (
                                                     <p className={styles.previewTitle}>{photo.src}</p>
                                                 </div>
                                             )}
-									    </div>
-								    </div>
+					                    </div>
+				                    </div>
                                 }
-                                <span className={styles.error}>{errors.images && errors.images.message}</span>
+                                <div className={styles.photosBlock}>
+                                    <div className={styles.photosLoader}>
+                                        <label htmlFor="" className={styles.inputLabel}>
+                                            Фото
+                                        </label>
+                                        <label htmlFor="photos" className={styles.labelPhotos}>
+                                            {!drag ? 'Добавить новые фото' : 'Отпустите изображения'}
+                                        </label>
+                                        <input
+                                            id={'photos'}
+                                            className={styles.photoInput}
+                                            type="file"
+                                            {...register("images", {
+                                                value: newPhotos
+                                            })}
+                                            multiple
+                                            onChange={(e) => {
+                                                dropOrChangeHandler(
+                                                    e,
+                                                    files,
+                                                    setDrag,
+                                                    setFiles,
+                                                    setNewPhotos
+                                                )
+                                            }}
+                                            onDragStart={e => dragStartHandler(e)}
+                                            onDragLeave={e => dragLeaveHandler(e)}
+                                            onDragOver={e => dragStartHandler(e)}
+                                            onDrop={e => dropHandler(e)}
+                                        />
+                                    </div>
+                                    <span className={styles.error}>{errors.images && errors.images.message}</span>
+                                </div>
                             </div>
                         </form>
                         <LexkitEditor
@@ -496,4 +451,4 @@ const PortfolioEditView = (
     );
 };
 
-export default observer(PortfolioEditView);
+export default observer(PortfolioNewView);

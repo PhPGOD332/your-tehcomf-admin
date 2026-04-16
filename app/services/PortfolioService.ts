@@ -17,9 +17,8 @@ export class PortfolioService {
         return response.data;
     }
 
-    static async deleteWork(workId: number): Promise<void> {
-        const response = await $api.delete(`/portfolio/${workId}`);
-        console.log(response);
+    static async deleteWork(workId: number): Promise<AxiosResponse<{success: true}>> {
+        return await $api.delete(`/portfolio/${workId}`);
     }
 
     static async updateWork(work: IUploadWork): Promise<AxiosResponse<IWork>> {

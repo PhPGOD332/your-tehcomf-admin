@@ -7,7 +7,8 @@ export default [
         index("routes/home.tsx"),
         route('portfolio', 'routes/portfolio/layout.tsx', [
             index('routes/portfolio/_index.tsx'),
-            route(':name', 'routes/portfolio/$work.tsx')
+            route(':name', 'routes/portfolio/$work.tsx'),
+            route('new', 'routes/portfolio/new.tsx')
         ]),
     ]),
 ] satisfies RouteConfig;
