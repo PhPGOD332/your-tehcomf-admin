@@ -88,6 +88,10 @@ const PortfolioEditView = (
         setPhotos(newPhotos);
     }
 
+    useEffect(() => {
+        console.log(photos);
+    }, [photos]);
+
     const deleteNewImageHandler = (photoTitle: string) => {
         const images = [...newPhotos];
 

@@ -24,4 +24,8 @@ export class PortfolioService {
     static async updateWork(work: IUploadWork): Promise<AxiosResponse<IWork>> {
         return await $api.patch(`/portfolio/${work.id}`, work);
     }
+
+    static async createWork(work: IUploadWork): Promise<AxiosResponse<IWork>> {
+        return await $api.post(`/portfolio`, work);
+    }
 }

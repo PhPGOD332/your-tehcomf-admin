@@ -82,14 +82,14 @@ const PortfolioCard = React.memo((
                         )}
                 </div>
                 <div className={styles.type}>
-                    <span className={styles.typeSpan}>{work.type.caption ?? ''}</span>
+                    <span className={styles.typeSpan}>{(work.type && work.type.caption) ?? ''}</span>
                 </div>
                 <div className={styles.titleBlock}>
                     <MiniTitle classNames={styles.cardTitle}>{work.title ?? ''}</MiniTitle>
                 </div>
                 <div className={styles.categories}>
-                    <span className={`${styles.category} ${styles.firstCategory}`}>{work.style.caption}</span>
-                    <span className={`${styles.category}`}>{work.layout.caption ?? ''}</span>
+                    <span className={`${styles.category} ${styles.firstCategory}`}>{(work.style && work.style.caption) ?? ''}</span>
+                    <span className={`${styles.category}`}>{(work.layout && work.layout.caption) ?? ''}</span>
                 </div>
             </div>
         </div>

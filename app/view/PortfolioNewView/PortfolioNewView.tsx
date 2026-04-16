@@ -158,7 +158,7 @@ const PortfolioNewView = (
         updateWork.description = editorText;
         updateWork.images = [];
 
-        const work = await rootStore.updateWork(updateWork, files, editorNewFiles)
+        const work = await rootStore.createWork(updateWork, files, editorNewFiles)
 
         console.log(work)
 

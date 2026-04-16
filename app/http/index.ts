@@ -1,19 +1,17 @@
 import axios from "axios";
-
-const API_URL = 'http://localhost:3001';
+import {API_URL} from "~/shared/api";
+import Cookies from "js-cookie";
 
 const $api = axios.create({
     baseURL: `${API_URL}/api`,
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
     }
 })
 
 $api.interceptors.request.use(function (config) {
-    // const token = localStorage.getItem('accessToken');
-    // config.headers.Authorization = `Bearer ${token}`;
     return config;
 });
 

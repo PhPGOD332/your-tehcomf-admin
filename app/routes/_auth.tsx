@@ -8,13 +8,6 @@ import Gif from '~/data/images/gifs/loading.gif';
 import styles from '~/shared/styles/pages/_auth.module.scss';
 import Dashboard from "~/widgets/Dashboard/Dashboard";
 
-export async function loader({ request }: Route.LoaderArgs) {
-
-
-
-    return null;
-}
-
 const AuthLayout = () => {
     const { rootStore } = useContext(Context);
     const navigate = useNavigate();

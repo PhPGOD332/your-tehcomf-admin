@@ -16,12 +16,7 @@ import type {IFilterColor} from "~/types/PortfolioFilters/IFilterColor";
 import {makePersistable} from "mobx-persist-store";
 import type {IImage, IUploadImage} from "~/types/IImage";
 import {GalleryService} from "~/services/GalleryService";
-
-const API_URL = 'http://localhost:3001';
-
-const S3_URL = 'https://s3.regru.cloud/tehcomf-s3';
-
-const PATH_TO_IMAGES = `images/portfolio`;
+import {API_URL, PATH_TO_IMAGES, S3_URL} from "~/shared/api";
 
 export class Store {
     user = {} as IUser;
@@ -108,6 +103,12 @@ export class Store {
     async checkAuth(): Promise<AxiosResponse<AuthResponse>> {
         try {
             const response = await axios.post(`${API_URL}/api/auth/refresh`, {}, { withCredentials: true });
+
+            if (response.data.accessToken) {
+                this.isAuth = true;
+                this.setUser(response.data.user);
+            }
+
             return response.data;
         } catch (e) {
             console.log(e.response?.data?.message);
@@ -175,9 +176,6 @@ export class Store {
         };
 
         const imagesIds: number[] = [];
-        work.images.map(image => {
-            imagesIds.push(image.id ?? 0);
-        });
 
         if (newImages.length > 0) {
             for (const file of newImages) {
@@ -187,11 +185,7 @@ export class Store {
                     folder: `${PATH_TO_IMAGES}/${work.name}/`
                 }
 
-                console.log(uploadImage);
-
                 const imageResponse= await GalleryService.addImage(uploadImage);
-
-                console.log(imageResponse);
 
                 if (!imageResponse
                     || !imageResponse.data.id
@@ -228,11 +222,13 @@ export class Store {
             }
         }
 
-        console.log(patchWork);
+        work.images.map(image => {
+            patchWork.imageIds.push(image.id ?? 0);
+        });
 
         const response = await PortfolioService.updateWork(patchWork);
 
-        if (response) {
+        if (response.status === 200) {
             this.setWorks(this.works.map(work => {
                 if (work.id === response.data.id) {
                     work = response.data;
@@ -243,6 +239,88 @@ export class Store {
         } else {
             return null;
         }
+
+        return response.data
+    }
+
+    async createWork(work: IWork, newImages: File[], editorNewFiles: File[]): Promise<IWork | null> {
+        const patchWork: IUploadWork = {
+            ...work,
+            typeId: work.type.id,
+            styleId: work.style.id,
+            layoutId: work.layout.id,
+            colorId: work.color.id,
+            bodyColorId: work.bodyColor.id,
+            tableTopColorId: work.tableTopColor.id,
+            imageIds: []
+        };
+
+        const imagesIds: number[] = [];
+
+        if (newImages.length > 0) {
+            for (const file of newImages) {
+                const uploadImage: IUploadImage = {
+                    file: file,
+                    imageAlt: '',
+                    folder: `${PATH_TO_IMAGES}/${work.name}/`
+                }
+
+                const imageResponse= await GalleryService.addImage(uploadImage);
+
+                if (!imageResponse
+                    || !imageResponse.data.id
+                    || imageResponse.status !== 201) {
+                    return null;
+                }
+
+                imagesIds.push(imageResponse.data.id);
+            }
+
+            patchWork.imageIds = imagesIds;
+        }
+
+        if (editorNewFiles.length > 0) {
+            const blobRegex = /src=["'](blob:http?:\/\/[^"']+)["']/gi;
+
+            for (const file of editorNewFiles) {
+                const uploadImage: IUploadImage = {
+                    file: file,
+                    imageAlt: '',
+                    folder: `${PATH_TO_IMAGES}/${work.name}/`
+                }
+
+                const imageResponse: AxiosResponse<IImage> = await GalleryService.addImage(uploadImage);
+
+                if (imageResponse.status !== 201) {
+                    return {} as IWork;
+                }
+
+                patchWork.description = patchWork.description.replace(blobRegex, (match, fullBlobUrl) => {
+                    const newUrl = `${S3_URL}/${PATH_TO_IMAGES}/${patchWork.name}/${imageResponse.data.src.split('/').at(-1)}`;
+                    return match.replace(fullBlobUrl, newUrl);
+                });
+            }
+        }
+
+        work.images.map(image => {
+            patchWork.imageIds.push(image.id ?? 0);
+        });
+
+        const response = await PortfolioService.createWork(patchWork);
+
+        if (response.status === 201) {
+            this.setWorks(this.works.map(work => {
+                if (work.id === response.data.id) {
+                    work = response.data;
+                }
+
+                return work;
+            }));
+        } else {
+            return null;
+        }
+
+        return response.data;
     }
 
     async getTypes(): Promise<IFilterType[]> {
