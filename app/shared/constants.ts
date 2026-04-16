@@ -13,7 +13,7 @@ export const pagesData: IPages = {
 }
 
 export const pagesLinks = {
-    home: "/",
+    home: "/home",
     questions: '/contacts',
     portfolio: '/portfolio',
     privacyPolicy: '/privacy_policy',

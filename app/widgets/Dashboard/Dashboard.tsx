@@ -24,8 +24,14 @@ const Dashboard = () => {
                 <MiniTitle>Меню</MiniTitle>
                 <div className={styles.menu}>
                     <div className={styles.list}>
+                        <Link to={pagesLinks.home}
+                              className={`${styles.item} ${location.pathname.startsWith(pagesLinks.home) ? styles.item_active : ''}`}
+                        >
+                            Главная
+                        </Link>
                         <Link to={pagesLinks.portfolio}
-                              className={`${styles.item} ${location.pathname.substring(Number(pagesLinks.portfolio)) ? styles.item_active : ''}`}>
+                              className={`${styles.item} ${location.pathname.startsWith(pagesLinks.portfolio) ? styles.item_active : ''}`}
+                        >
                             Портфолио
                         </Link>
                     </div>

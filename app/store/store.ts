@@ -240,9 +240,9 @@ export class Store {
 
                 return work;
             }));
+        } else {
+            return null;
         }
-
-        return response.data;
     }
 
     async getTypes(): Promise<IFilterType[]> {
