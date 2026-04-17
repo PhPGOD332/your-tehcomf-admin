@@ -4,6 +4,15 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [tailwindcss(), reactRouter()],
+  server: {
+    host: true,
+    port: 5173,
+    allowedHosts: [
+      'admin.tehcomf.ru',
+      'localhost',
+      '127.0.0.1'
+    ],
+  },
   resolve: {
     tsconfigPaths: true,
   },
