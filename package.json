@@ -1,14 +1,16 @@
 {
-  "name": "tehcomf admin dashboard",
+  "name": "tehcomf админка",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
+    "start": "npx serve -s build/client -l 5173",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@lexical/code": "^0.43.0",
+    "@lexical/code-prism": "^0.43.0",
     "@lexical/html": "^0.43.0",
     "@lexical/list": "^0.43.0",
     "@lexical/markdown": "^0.43.0",
@@ -28,6 +30,7 @@
     "mobx": "^6.15.0",
     "mobx-persist-store": "^1.1.8",
     "mobx-react-lite": "^4.1.1",
+    "prismjs": "^1.30.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-hook-form": "^7.72.1",
@@ -41,8 +44,10 @@
     "@tailwindcss/vite": "^4.2.2",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^22",
+    "@types/prismjs": "^1.26.6",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "cross-env": "^10.1.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
     "vite": "^8.0.3"

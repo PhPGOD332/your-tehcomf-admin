@@ -16,14 +16,7 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
-  ssr: {
-    noExternal: [],
-    external: [
-      'swiper',
-      'swiper/react',
-      'swiper/modules',
-    ],
-  },
+  ssr: false,
   optimizeDeps: {
     include: ['swiper', 'swiper/react', 'swiper/modules'],
   },

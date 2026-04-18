@@ -158,9 +158,7 @@ const PortfolioNewView = (
         updateWork.description = editorText;
         updateWork.images = [];
 
-        const work = await rootStore.createWork(updateWork, files, editorNewFiles)
-
-        console.log(work)
+        const work = await rootStore.createWork(updateWork, files, editorNewFiles);
 
         if (work) {
             setStatusNotes([...statusNotes, <SuccessMessage message={'Работа успешно сохранена'} key={statusNotes.length} />]);
@@ -437,7 +435,7 @@ const PortfolioNewView = (
                             </div>
                         </form>
                         <LexkitEditor
-                            label={'Описание'}
+                            label={'Описание (для вывода текста с фотографиями используйте таблицу, например, в левой ячейке фотографии, в правой текст)'}
                             value={editorText}
                             setValue={setEditorText}
                             setNewFileHandler={setEditorNewFileHandler}

@@ -116,21 +116,25 @@ export class Store {
     }
 
     async getWork(workName: string): Promise<IWork> {
-        return await PortfolioService.getWorkByName(workName);
+        const response = await PortfolioService.getWorkByName(workName);
+
+        if (response.status === 200) {
+            return response.data
+        }
     }
 
     async getAllWorks(): Promise<IWork[]> {
         this.isLoading = true;
 
         try {
-            const works = await PortfolioService.getAllWorks();
+            const response = await PortfolioService.getAllWorks();
 
-            if (works && works.length > 0) {
+            if (response.status === 200) {
                 runInAction(() => {
-                    this.setWorks(works);
+                    this.setWorks(response.data);
                 });
 
-                return works;
+                return response.data;
             }
         } catch (e) {
             console.log(e.response?.data?.message);
@@ -155,7 +159,7 @@ export class Store {
                 return response.data;
             }
         } catch (e) {
-            console.log()
+            console.log(e.message);
         } finally {
             runInAction(() => {
                 this.isLoading = false;
@@ -229,13 +233,10 @@ export class Store {
         const response = await PortfolioService.updateWork(patchWork);
 
         if (response.status === 200) {
-            this.setWorks(this.works.map(work => {
-                if (work.id === response.data.id) {
-                    work = response.data;
-                }
+            const response = await PortfolioService.getAllWorks();
 
-                return work;
-            }));
+            if (response.status === 200)
+                this.setWorks(response.data);
         } else {
             return null;
         }

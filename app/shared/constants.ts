@@ -13,11 +13,8 @@ export const pagesData: IPages = {
 }
 
 export const pagesLinks = {
-    home: "/home",
-    questions: '/contacts',
+    home: "/",
     portfolio: '/portfolio',
-    privacyPolicy: '/privacy_policy',
-    aboutCompany: '/about'
 }
 
 interface IPage {

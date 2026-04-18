@@ -7,14 +7,12 @@ const S3_URL = 'https://s3.regru.cloud/tehcomf-s3';
 const PATH_TO_IMAGES = `${S3_URL}/images/portfolio`;
 
 export class PortfolioService {
-    static async getAllWorks(): Promise<IWork[]> {
-        const response = await $api.get('/portfolio');
-        return response.data;
+    static async getAllWorks(): Promise<AxiosResponse<IWork[]>> {
+        return await $api.get('/portfolio');
     }
 
-    static async getWorkByName(name: string): Promise<IWork> {
-        const response = await $api.get(`/portfolio/${name}`);
-        return response.data;
+    static async getWorkByName(name: string): Promise<AxiosResponse<IWork>> {
+        return await $api.get(`/portfolio/${name}`);
     }
 
     static async deleteWork(workId: number): Promise<AxiosResponse<{success: true}>> {

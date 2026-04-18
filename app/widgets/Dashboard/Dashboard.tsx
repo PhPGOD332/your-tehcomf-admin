@@ -25,7 +25,7 @@ const Dashboard = () => {
                 <div className={styles.menu}>
                     <div className={styles.list}>
                         <Link to={pagesLinks.home}
-                              className={`${styles.item} ${location.pathname.startsWith(pagesLinks.home) ? styles.item_active : ''}`}
+                              className={`${styles.item} ${location.pathname === '/' ? styles.item_active : ''}`}
                         >
                             Главная
                         </Link>

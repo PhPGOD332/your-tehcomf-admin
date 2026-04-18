@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Outlet, useNavigate} from "react-router";
-import type {Route} from "./+types/_auth";
 import {observer} from "mobx-react-lite";
 import {Context} from "~/root";
 import GifImage from "~/shared/UI/GifImage/GifImage";
@@ -34,7 +33,7 @@ const AuthLayout = () => {
     if (isChecking) {
         return (
             <div className={'global-loading'}>
-                <GifImage src={Gif} classNames={styles.gifBlock} />
+                <GifImage src={Gif} classNames={'gifBlock'} />
             </div>
         );
     }

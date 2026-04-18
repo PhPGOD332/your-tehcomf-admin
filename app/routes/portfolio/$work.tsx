@@ -8,6 +8,13 @@ import GifImage from "~/shared/UI/GifImage/GifImage";
 import Gif from "~/data/images/gifs/loading.gif";
 import styles from "~/shared/styles/pages/_auth.module.scss";
 
+export function meta({}: Route.MetaArgs) {
+    return [
+        { title: "Редактирование работы портфолио" },
+        // { name: "description", content: "Welcome to React Router!" },
+    ];
+}
+
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     const { rootStore } = await import('~/store/store');
     const work = await rootStore.getWork(params.name ?? '');
@@ -20,14 +27,9 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     return { work, types, filterColors, colors, layouts, styles };
 }
 
-export function HydrateFallback() {
-    return <div className={'loading'}>
-        <GifImage src={Gif} classNames={styles.gifBlock}/>
-    </div>;
-}
-
 const Work = ({loaderData}: Route.ComponentProps) => {
     const [isClient, setIsClient] = useState<boolean>(false);
+    const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true);
     const navigate = useNavigate();
     const { rootStore } = useContext(Context);
     const { name } = useParams();
@@ -38,20 +40,35 @@ const Work = ({loaderData}: Route.ComponentProps) => {
     const layouts = loaderData.layouts;
     const filterStyles = loaderData.styles;
 
-    if (!rootStore.isAuth) {
-        navigate('/login');
-    }
-
     useEffect(() => {
         if (localStorage.getItem('refreshToken')) {
             rootStore.checkAuth();
         }
-        setIsClient(true);
-    }, []);
 
-    if (!isClient) {
+        const checkAuth = async () => {
+            setIsCheckingAuth(true);
+
+            if (localStorage.getItem('refreshToken')) {
+                await rootStore.checkAuth();
+            }
+
+            setIsCheckingAuth(false);
+            setIsClient(true);
+        };
+
+        checkAuth();
+        setIsClient(true);
+    }, [rootStore]);
+
+    useEffect(() => {
+        if (isClient && !isCheckingAuth && !rootStore.isAuth) {
+            navigate('/login');
+        }
+    }, [isClient, isCheckingAuth, rootStore.isAuth, navigate]);
+
+    if (!isClient || isCheckingAuth) {
         return <div className={'loading'}>
-            <GifImage src={Gif} classNames={styles.gifBlock}/>
+            <GifImage src={Gif} classNames={'gifBlock'}/>
         </div>;
     }
 

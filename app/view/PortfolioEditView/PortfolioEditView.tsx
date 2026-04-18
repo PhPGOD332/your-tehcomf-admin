@@ -88,10 +88,6 @@ const PortfolioEditView = (
         setPhotos(newPhotos);
     }
 
-    useEffect(() => {
-        console.log(photos);
-    }, [photos]);
-
     const deleteNewImageHandler = (photoTitle: string) => {
         const images = [...newPhotos];
 
@@ -486,7 +482,7 @@ const PortfolioEditView = (
                             </div>
                         </form>
                         <LexkitEditor
-                            label={'Описание'}
+                            label={'Описание (для вывода текста с фотографиями используйте таблицу, например, в левой ячейке фотографии, в правой текст)'}
                             value={editorText}
                             setValue={setEditorText}
                             setNewFileHandler={setEditorNewFileHandler}

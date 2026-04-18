@@ -1,7 +1,7 @@
 import React, {forwardRef} from 'react';
 import styles from './NumInput.module.scss';
-import type {FieldError} from "react-hook-form";
-import TextInput, {InputType} from "~/shared/UI/TextInput/TextInput";
+import type { FieldError } from "react-hook-form";
+import { InputType } from "~/shared/UI/TextInput/TextInput";
 
 interface NumInputProps {
     type?: InputType;

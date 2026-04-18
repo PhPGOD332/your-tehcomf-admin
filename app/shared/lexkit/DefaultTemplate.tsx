@@ -437,12 +437,12 @@ function Toolbar({
           <button onClick={onCommandPaletteOpen} className="lexkit-toolbar-button" title="Command Palette (Ctrl+K)"><Command size={16} /></button>
         </div>
 
-        {/* Theme Toggle */}
-        <div className="lexkit-toolbar-section">
-          <button onClick={toggleTheme} className="lexkit-toolbar-button" title={isDark ? "Light Mode" : "Dark Mode"}>
-            {isDark ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
-        </div>
+        {/*/!* Theme Toggle *!/*/}
+        {/*<div className="lexkit-toolbar-section">*/}
+        {/*  <button onClick={toggleTheme} className="lexkit-toolbar-button" title={isDark ? "Light Mode" : "Dark Mode"}>*/}
+        {/*    {isDark ? <Sun size={16} /> : <Moon size={16} />}*/}
+        {/*  </button>*/}
+        {/*</div>*/}
       </div>
 
       {/* Table Dialog */}

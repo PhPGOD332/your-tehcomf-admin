@@ -8,7 +8,14 @@ import { useNavigate, useParams } from "react-router";
 import { Context } from "~/root";
 import PortfolioNewView from "~/view/PortfolioNewView/PortfolioNewView";
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+export function meta({}: Route.MetaArgs) {
+    return [
+        { title: "Создание работы портфолио" },
+        // { name: "description", content: "Welcome to React Router!" },
+    ];
+}
+
+export async function clientLoader() {
     const { rootStore } = await import('~/store/store');
     const types = await rootStore.getTypes();
     const filterColors = await rootStore.getFilterColors();
@@ -19,38 +26,46 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     return { types, filterColors, colors, layouts, styles };
 }
 
-export function HydrateFallback() {
-    return <div className={'loading'}>
-        <GifImage src={Gif} classNames={styles.gifBlock} />
-    </div>;
-}
-
 const New = ({ loaderData }: Route.ComponentProps) => {
     const [isClient, setIsClient] = useState<boolean>(false);
+    const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true);
     const navigate = useNavigate();
     const { rootStore } = useContext(Context);
-    const { name } = useParams();
-    const work = loaderData.work;
     const types = loaderData.types;
     const filterColors = loaderData.filterColors;
     const colors = loaderData.colors;
     const layouts = loaderData.layouts;
     const filterStyles = loaderData.styles;
 
-    if (!rootStore.isAuth) {
-        navigate('/login');
-    }
-
     useEffect(() => {
         if (localStorage.getItem('refreshToken')) {
             rootStore.checkAuth();
         }
-        setIsClient(true);
-    }, []);
 
-    if (!isClient) {
+        const checkAuth = async () => {
+            setIsCheckingAuth(true);
+
+            if (localStorage.getItem('refreshToken')) {
+                await rootStore.checkAuth();
+            }
+
+            setIsCheckingAuth(false);
+            setIsClient(true);
+        };
+
+        checkAuth();
+        setIsClient(true);
+    }, [rootStore]);
+
+    useEffect(() => {
+        if (isClient && !isCheckingAuth && !rootStore.isAuth) {
+            navigate('/login');
+        }
+    }, [isClient, isCheckingAuth, rootStore.isAuth, navigate]);
+
+    if (!isClient || isCheckingAuth) {
         return <div className={'loading'}>
-            <GifImage src={Gif} classNames={styles.gifBlock}/>
+            <GifImage src={Gif} classNames={'gifBlock'}/>
         </div>;
     }
 

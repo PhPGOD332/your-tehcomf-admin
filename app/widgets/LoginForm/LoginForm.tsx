@@ -22,7 +22,7 @@ const LoginForm = () => {
         if (!rootStore.isAuth) {
             setError('Неверно указан логин или пароль!')
         } else {
-            navigate('/home');
+            navigate('/');
         }
     }
 
