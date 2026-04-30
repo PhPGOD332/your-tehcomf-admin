@@ -1,6 +1,5 @@
 import axios from "axios";
-import {API_URL} from "~/shared/api";
-import Cookies from "js-cookie";
+import { API_URL } from "~/shared/api";
 
 const $api = axios.create({
     baseURL: `${API_URL}/api`,

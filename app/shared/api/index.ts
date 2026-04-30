@@ -1,3 +1,4 @@
-export const API_URL = 'http://localhost:3001';
-export const S3_URL = 'https://s3.regru.cloud/tehcomf-s3';
-export const PATH_TO_IMAGES = 'images/portfolio';
+
+export const API_URL = import.meta.env.VITE_API_URL;
+export const S3_URL = import.meta.env.VITE_S3_URL;
+export const PATH_TO_IMAGES = import.meta.env.VITE_PATH_TO_IMAGES;

@@ -13,7 +13,6 @@ import type {IFilterLayout} from "~/types/PortfolioFilters/IFilterLayout";
 import type {IFilterStyle} from "~/types/PortfolioFilters/IFilterStyle";
 import {PortfolioFiltersService} from "~/services/PortfolioFiltersService";
 import type {IFilterColor} from "~/types/PortfolioFilters/IFilterColor";
-import {makePersistable} from "mobx-persist-store";
 import type {IImage, IUploadImage} from "~/types/IImage";
 import {GalleryService} from "~/services/GalleryService";
 import {API_URL, PATH_TO_IMAGES, S3_URL} from "~/shared/api";
