@@ -203,7 +203,7 @@ export class Store {
         }
 
         if (editorNewFiles.length > 0) {
-            const blobRegex = /src=["'](blob:http?:\/\/[^"']+)["']/gi;
+            const blobRegex = /src=["'](blob:https?:\/\/[^"']+)["']/gi;
 
             for (const file of editorNewFiles) {
                 const uploadImage: IUploadImage = {
@@ -280,7 +280,7 @@ export class Store {
         }
 
         if (editorNewFiles.length > 0) {
-            const blobRegex = /src=["'](blob:http?:\/\/[^"']+)["']/gi;
+            const blobRegex = /src=["'](blob:https?:\/\/[^"']+)["']/gi;
 
             for (const file of editorNewFiles) {
                 const uploadImage: IUploadImage = {
