@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import styles from './PortfolioEditView.module.scss';
 import type {IWork} from "~/types/IWork";
 import SubTitle from "~/shared/UI/SubTitle/SubTitle";
@@ -53,7 +53,7 @@ const PortfolioEditView = (
     const [photos, setPhotos] = useState<IImage[]>(work.images);
     const [newPhotos, setNewPhotos] = useState<IBlobImage[]>([]);
     const [files, setFiles] = useState<File[]>([]);
-    const [editorNewFiles, setEditorNewFiles] = useState<File[]>([]);
+    const editorNewFilesRef = useRef<File[]>([]);
     const [drag, setDrag] = useState<boolean>(false);
     const [statusNotes, setStatusNotes] = useState<React.ReactNode[]>([]);
 
@@ -114,19 +114,19 @@ const PortfolioEditView = (
         setNewPhotos(photos);
     };
 
-    const setEditorNewFileHandler = (file: File) => {
+    const setEditorNewFileHandler = useCallback((file: File) => {
         if (!file) return;
 
-        setEditorNewFiles([...editorNewFiles, file]);
-    }
+        editorNewFilesRef.current = [...editorNewFilesRef.current, file];
+    }, []);
 
-    const setEditorDeleteFileHandler = (title: string) => {
+    const setEditorDeleteFileHandler = useCallback((title: string) => {
         if (!title) return;
 
-        const newFiles = editorNewFiles.filter(currFile => currFile.name !== title);
+        const newFiles = editorNewFilesRef.current.filter(currFile => currFile.name !== title);
 
-        setEditorNewFiles(newFiles);
-    }
+        editorNewFilesRef.current = newFiles;
+    }, []);
 
     // Обработчики
     const dragStartHandler = (event: any) => {
@@ -168,7 +168,7 @@ const PortfolioEditView = (
         updateWork.description = editorText;
         updateWork.images = photos;
 
-        const work = await rootStore.updateWork(updateWork, files, editorNewFiles)
+        const work = await rootStore.updateWork(updateWork, files, editorNewFilesRef.current)
 
         if (work) {
             setStatusNotes([...statusNotes, <SuccessMessage message={'Работа успешно сохранена'} key={statusNotes.length} />]);
@@ -178,7 +178,7 @@ const PortfolioEditView = (
             setNewPhotos([]);
             setPhotos(work.images);
             setEditorText(work.description);
-            setEditorNewFiles([]);
+            editorNewFilesRef.current = [];
         } else {
             setStatusNotes([...statusNotes, <SuccessMessage message={'При сохранении произошла ошибка'} key={statusNotes.length} />]);
             deleteStatusNote();
@@ -195,13 +195,18 @@ const PortfolioEditView = (
         }
     }
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setCurrWork({...work, description: editorText});
-        }, 1000);
+    // useEffect(() => {
+    //     const timeout = setTimeout(() => {
+    //         setCurrWork({...work, description: editorText});
+    //     }, 1000);
+    //
+    //     return clearTimeout(timeout);
+    // }, [editorText]);
 
-        return clearTimeout(timeout);
-    }, [editorText]);
+    const editorCallbacks = useMemo(() => ({
+        setNewFileHandler: setEditorNewFileHandler,
+        setDeleteFileHandler: setEditorDeleteFileHandler
+    }), [setEditorNewFileHandler, setEditorDeleteFileHandler]);
 
     return (
         <>
@@ -485,8 +490,9 @@ const PortfolioEditView = (
                             label={'Описание (для вывода текста с фотографиями используйте таблицу, например, в левой ячейке фотографии, в правой текст)'}
                             value={editorText}
                             setValue={setEditorText}
-                            setNewFileHandler={setEditorNewFileHandler}
-                            setDeleteFileHandler={setEditorDeleteFileHandler}
+                            // setNewFileHandler={setEditorNewFileHandler}
+                            // setDeleteFileHandler={setEditorDeleteFileHandler}
+                            {...editorCallbacks}
                         />
                         {statusNotes}
                     </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import { DefaultTemplate } from "~/shared/lexkit/DefaultTemplate";
 import styles from './LexkitEditor.module.scss';
 
@@ -10,7 +10,7 @@ interface EditorProps {
     setDeleteFileHandler?: (title: string) => void;
 }
 
-const LexkitEditor = (
+const LexkitEditor = memo((
     {
         label,
         value,
@@ -40,6 +40,6 @@ const LexkitEditor = (
 
         </>
     );
-};
+});
 
 export default LexkitEditor;

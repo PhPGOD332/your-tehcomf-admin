@@ -206,6 +206,7 @@ export class Store {
             const blobRegex = /src=["'](blob:https?:\/\/[^"']+)["']/gi;
 
             for (const file of editorNewFiles) {
+
                 const uploadImage: IUploadImage = {
                     file: file,
                     imageAlt: '',
@@ -218,9 +219,16 @@ export class Store {
                     return {} as IWork;
                 }
 
+                let replaceCount = 0;
+
                 patchWork.description = patchWork.description.replace(blobRegex, (match, fullBlobUrl) => {
-                    const newUrl = `${S3_URL}/${PATH_TO_IMAGES}/${patchWork.name}/${imageResponse.data.src.split('/').at(-1)}`;
-                    return match.replace(fullBlobUrl, newUrl);
+                    if (replaceCount === 0) {
+                        replaceCount++;
+                        const newUrl = `${S3_URL}/${PATH_TO_IMAGES}/${patchWork.name}/${imageResponse.data.src.split('/').at(-1)}`;
+                        return match.replace(fullBlobUrl, newUrl);
+                    }
+
+                    return match;
                 });
             }
         }
