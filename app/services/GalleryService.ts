@@ -9,9 +9,10 @@ const PATH_TO_IMAGES = `${S3_URL}/images/portfolio`;
 export class GalleryService {
     static async addImage(image: IUploadImage): Promise<AxiosResponse<IImage>> {
         const formData = new FormData();
+        const imageAlt = image.imageAlt?.trim() || image.file.name;
 
         formData.append("file", image.file);
-        formData.append("imageAlt", image.imageAlt ?? '');
+        formData.append("imageAlt", imageAlt);
         formData.append("folder", image.folder);
         formData.append("order", image.order ? image.order.toString() : "0");
 

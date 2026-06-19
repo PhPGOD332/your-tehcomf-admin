@@ -16,6 +16,7 @@ import type {IFilterColor} from "~/types/PortfolioFilters/IFilterColor";
 import type {IImage, IUploadImage} from "~/types/IImage";
 import {GalleryService} from "~/services/GalleryService";
 import {API_URL, PATH_TO_IMAGES, S3_URL} from "~/shared/api";
+import {replace} from "react-router";
 
 export class Store {
     user = {} as IUser;
@@ -203,7 +204,8 @@ export class Store {
         }
 
         if (editorNewFiles.length > 0) {
-            const blobRegex = /src=["'](blob:https?:\/\/[^"']+)["']/gi;
+            // const blobRegex = /src=["'](blob:https?:\/\/[^"']+)["']/gi;
+            const blobRegex = /<img\s+([^>]*?)src=["'](blob:https?:\/\/[^"']+)["']([^>]*?)alt=["']([^"']+)["']([^>]*?)>/gi;
 
             for (const file of editorNewFiles) {
 
@@ -215,18 +217,21 @@ export class Store {
 
                 const imageResponse: AxiosResponse<IImage> = await GalleryService.addImage(uploadImage);
 
+                const targetAlt = imageResponse.data.imageAlt;
+
                 if (imageResponse.status !== 201) {
                     return {} as IWork;
                 }
 
-                let replaceCount = 0;
+                let isReplaced = false;
 
-                patchWork.description = patchWork.description.replace(blobRegex, (match, fullBlobUrl) => {
-                    if (replaceCount === 0) {
-                        replaceCount++;
-                        const newUrl = `${S3_URL}/${PATH_TO_IMAGES}/${patchWork.name}/${imageResponse.data.src.split('/').at(-1)}`;
-                        return match.replace(fullBlobUrl, newUrl);
-                    }
+                patchWork.description = patchWork.description.replace(blobRegex, (match, beforeSrc, fullBlobUrl, betweenSrcAlt, altValue, afterAlt) => {
+                        if (!isReplaced && altValue === targetAlt) {
+                            isReplaced = true;
+                            const newUrl = `${S3_URL}/${PATH_TO_IMAGES}/${patchWork.name}/${imageResponse.data.src.split('/').at(-1)}`;
+                            // return match.replace(fullBlobUrl, newUrl);
+                            return `<img ${beforeSrc}src="${newUrl}"${betweenSrcAlt}alt="${altValue}"${afterAlt}>`;
+                        }
 
                     return match;
                 });
@@ -288,9 +293,11 @@ export class Store {
         }
 
         if (editorNewFiles.length > 0) {
-            const blobRegex = /src=["'](blob:https?:\/\/[^"']+)["']/gi;
+            // const blobRegex = /src=["'](blob:https?:\/\/[^"']+)["']/gi;
+            const blobRegex = /<img\s+([^>]*?)src=["'](blob:https?:\/\/[^"']+)["']([^>]*?)alt=["']([^"']+)["']([^>]*?)>/gi;
 
             for (const file of editorNewFiles) {
+
                 const uploadImage: IUploadImage = {
                     file: file,
                     imageAlt: '',
@@ -299,13 +306,23 @@ export class Store {
 
                 const imageResponse: AxiosResponse<IImage> = await GalleryService.addImage(uploadImage);
 
+                const targetAlt = imageResponse.data.imageAlt;
+
                 if (imageResponse.status !== 201) {
                     return {} as IWork;
                 }
 
-                patchWork.description = patchWork.description.replace(blobRegex, (match, fullBlobUrl) => {
-                    const newUrl = `${S3_URL}/${PATH_TO_IMAGES}/${patchWork.name}/${imageResponse.data.src.split('/').at(-1)}`;
-                    return match.replace(fullBlobUrl, newUrl);
+                let isReplaced = false;
+
+                patchWork.description = patchWork.description.replace(blobRegex, (match, beforeSrc, fullBlobUrl, betweenSrcAlt, altValue, afterAlt) => {
+                    if (!isReplaced && altValue === targetAlt) {
+                        isReplaced = true;
+                        const newUrl = `${S3_URL}/${PATH_TO_IMAGES}/${patchWork.name}/${imageResponse.data.src.split('/').at(-1)}`;
+                        // return match.replace(fullBlobUrl, newUrl);
+                        return `<img ${beforeSrc}src="${newUrl}"${betweenSrcAlt}alt="${altValue}"${afterAlt}>`;
+                    }
+
+                    return match;
                 });
             }
         }
