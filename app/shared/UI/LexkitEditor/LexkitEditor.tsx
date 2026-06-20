@@ -20,7 +20,7 @@ const LexkitEditor = memo((
     }: EditorProps
 ) => {
 
-    const changeHandler = ({ markdown, html }) => {
+    const changeHandler = ({ html }) => {
         setValue ? setValue(html) : null;
     }
 

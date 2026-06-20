@@ -48,6 +48,7 @@ const PortfolioEditView = (
         setError
     } = useForm<TFormPortfolioInputs>({ mode: 'onChange', reValidateMode: 'onChange' });
     const { rootStore } = useContext(Context);
+    const [editorKey, setEditorKey] = useState<number>(0)
     const [editorText, setEditorText] = useState<string>(work.description ?? '');
     const [currWork, setCurrWork] = useState<IWork>(work);
     const [photos, setPhotos] = useState<IImage[]>(work.images);
@@ -179,6 +180,7 @@ const PortfolioEditView = (
             setPhotos(work.images);
             setEditorText(work.description);
             editorNewFilesRef.current = [];
+            setEditorKey(prev => prev + 1);
         } else {
             setStatusNotes([...statusNotes, <SuccessMessage message={'При сохранении произошла ошибка'} key={statusNotes.length} />]);
             deleteStatusNote();
@@ -196,11 +198,13 @@ const PortfolioEditView = (
     }
 
     // useEffect(() => {
-    //     const timeout = setTimeout(() => {
-    //         setCurrWork({...work, description: editorText});
-    //     }, 1000);
-    //
-    //     return clearTimeout(timeout);
+    //     // const timeout = setTimeout(() => {
+    //     //     setCurrWork({...work, description: editorText});
+    //     // }, 1000);
+    //     //
+    //     // return clearTimeout(timeout);
+    //     console.log('editorText')
+    //     console.log(editorText)
     // }, [editorText]);
 
     const editorCallbacks = useMemo(() => ({
@@ -487,6 +491,7 @@ const PortfolioEditView = (
                             </div>
                         </form>
                         <LexkitEditor
+                            key={editorKey}
                             label={'Описание (для вывода текста с фотографиями используйте таблицу, например, в левой ячейке фотографии, в правой текст)'}
                             value={editorText}
                             setValue={setEditorText}
