@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import styles from './PortfolioNewView.module.scss';
 import {observer} from "mobx-react-lite";
 import type {IWork} from "~/types/IWork";
@@ -46,11 +46,13 @@ const PortfolioNewView = (
         setError
     } = useForm<TFormPortfolioInputs>({ mode: 'onChange', reValidateMode: 'onChange' });
     const { rootStore } = useContext(Context);
+    const [editorKey, setEditorKey] = useState<number>(0);
     const [editorText, setEditorText] = useState<string>('');
     const [currWork, setCurrWork] = useState<IWork>({} as IWork);
     const [newPhotos, setNewPhotos] = useState<IBlobImage[]>([]);
     const [files, setFiles] = useState<File[]>([]);
     const [editorNewFiles, setEditorNewFiles] = useState<File[]>([]);
+    const editorNewFilesRef = useRef<File[]>([]);
     const [drag, setDrag] = useState<boolean>(false);
     const [statusNotes, setStatusNotes] = useState<React.ReactNode[]>([]);
 
@@ -104,18 +106,18 @@ const PortfolioNewView = (
         setNewPhotos(photos);
     };
 
-    const setEditorNewFileHandler = (file: File) => {
+    const setEditorNewFileHandler = useCallback((file: File) => {
         if (!file) return;
 
-        setEditorNewFiles([...editorNewFiles, file]);
-    }
+        editorNewFilesRef.current = [...editorNewFilesRef.current, file];
+    }, []);
 
     const setEditorDeleteFileHandler = (title: string) => {
         if (!title) return;
 
-        const newFiles = editorNewFiles.filter(currFile => currFile.name !== title);
+        const newFiles = editorNewFilesRef.current.filter(currFile => currFile.name !== title);
 
-        setEditorNewFiles(newFiles);
+        editorNewFilesRef.current = newFiles;
     }
 
     // Обработчики
@@ -158,7 +160,7 @@ const PortfolioNewView = (
         updateWork.description = editorText;
         updateWork.images = [];
 
-        const work = await rootStore.createWork(updateWork, files, editorNewFiles);
+        const work = await rootStore.createWork(updateWork, files, editorNewFilesRef.current);
 
         if (work) {
             setStatusNotes([...statusNotes, <SuccessMessage message={'Работа успешно сохранена'} key={statusNotes.length} />]);
@@ -167,7 +169,8 @@ const PortfolioNewView = (
             setFiles([]);
             setNewPhotos([]);
             setEditorText(work.description);
-            setEditorNewFiles([]);
+            editorNewFilesRef.current = [];
+            setEditorKey(prev => prev + 1);
         } else {
             setStatusNotes([...statusNotes, <SuccessMessage message={'При сохранении произошла ошибка'} key={statusNotes.length} />]);
             deleteStatusNote();
@@ -184,13 +187,18 @@ const PortfolioNewView = (
         }
     }
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setCurrWork({...currWork, description: editorText});
-        }, 1000);
+    // useEffect(() => {
+    //     const timeout = setTimeout(() => {
+    //         setCurrWork({...currWork, description: editorText});
+    //     }, 1000);
+    //
+    //     return clearTimeout(timeout);
+    // }, [editorText]);
 
-        return clearTimeout(timeout);
-    }, [editorText]);
+    const editorCallbacks = useMemo(() => ({
+        setNewFileHandler: setEditorNewFileHandler,
+        setDeleteFileHandler: setEditorDeleteFileHandler
+    }), [setEditorNewFileHandler, setEditorDeleteFileHandler]);
 
     return (
         <>
@@ -435,11 +443,11 @@ const PortfolioNewView = (
                             </div>
                         </form>
                         <LexkitEditor
+                            key={editorKey}
                             label={'Описание (для вывода текста с фотографиями используйте таблицу, например, в левой ячейке фотографии, в правой текст)'}
                             value={editorText}
                             setValue={setEditorText}
-                            setNewFileHandler={setEditorNewFileHandler}
-                            setDeleteFileHandler={setEditorDeleteFileHandler}
+                            {...editorCallbacks}
                         />
                         {statusNotes}
                     </div>

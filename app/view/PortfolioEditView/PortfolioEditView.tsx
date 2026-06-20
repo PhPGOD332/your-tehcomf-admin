@@ -48,7 +48,7 @@ const PortfolioEditView = (
         setError
     } = useForm<TFormPortfolioInputs>({ mode: 'onChange', reValidateMode: 'onChange' });
     const { rootStore } = useContext(Context);
-    const [editorKey, setEditorKey] = useState<number>(0)
+    const [editorKey, setEditorKey] = useState<number>(0);
     const [editorText, setEditorText] = useState<string>(work.description ?? '');
     const [currWork, setCurrWork] = useState<IWork>(work);
     const [photos, setPhotos] = useState<IImage[]>(work.images);
