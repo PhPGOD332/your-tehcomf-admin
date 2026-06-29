@@ -333,6 +333,8 @@ export class Store {
 
         const response = await PortfolioService.createWork(patchWork);
 
+        const works = await this.getAllWorks();
+
         if (response.status === 201) {
             this.setWorks(this.works.map(work => {
                 if (work.id === response.data.id) {

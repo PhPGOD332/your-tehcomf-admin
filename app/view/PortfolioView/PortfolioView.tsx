@@ -25,7 +25,7 @@ const PortfolioView = (
 ) => {
     const [currentCount, setCurrentCount] = useState<number>(11);
     const step = 6;
-    const [allWorks, setAllWorks] = useState<IWork[]>(works ?? []);
+    const [allWorks, setAllWorks] = useState<IWork[]>(works.sort((w1, w2) => w2.id - w1.id) ?? []);
     const [currentWorks, setCurrentWorks] = useState<IWork[]>([]);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [deleteId, setDeleteId] = useState<number>(null);

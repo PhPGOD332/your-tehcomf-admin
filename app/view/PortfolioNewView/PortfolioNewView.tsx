@@ -19,6 +19,8 @@ import Select from "~/shared/UI/Select/Select";
 import {dropOrChangeHandler} from "~/shared/utils/dropOrChangeHandler";
 import LexkitEditor from "~/shared/UI/LexkitEditor/LexkitEditor";
 import SuccessMessage from "~/shared/UI/SuccessMessage/SuccessMessage";
+import { useNavigate } from 'react-router';
+import {pagesLinks} from "~/shared/constants";
 
 interface ViewProps {
     title: string;
@@ -51,10 +53,11 @@ const PortfolioNewView = (
     const [currWork, setCurrWork] = useState<IWork>({} as IWork);
     const [newPhotos, setNewPhotos] = useState<IBlobImage[]>([]);
     const [files, setFiles] = useState<File[]>([]);
-    const [editorNewFiles, setEditorNewFiles] = useState<File[]>([]);
+    // const [editorNewFiles, setEditorNewFiles] = useState<File[]>([]);
     const editorNewFilesRef = useRef<File[]>([]);
     const [drag, setDrag] = useState<boolean>(false);
     const [statusNotes, setStatusNotes] = useState<React.ReactNode[]>([]);
+    let navigate = useNavigate();
 
     const changeTypeHandler = (typeName: string) => {
         setCurrWork({...currWork, type: rootStore.types.find(type => type.name === typeName)});
@@ -171,6 +174,7 @@ const PortfolioNewView = (
             setEditorText(work.description);
             editorNewFilesRef.current = [];
             setEditorKey(prev => prev + 1);
+            navigate(`${pagesLinks.portfolio}/${work.name}`);
         } else {
             setStatusNotes([...statusNotes, <SuccessMessage message={'При сохранении произошла ошибка'} key={statusNotes.length} />]);
             deleteStatusNote();
